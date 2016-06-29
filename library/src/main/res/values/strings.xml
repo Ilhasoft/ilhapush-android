@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">push</string>
+    <string name="hint_message">Escreva uma mensagem</string>
+    <string name="error_contact_update">Não foi possível salvar o contato, verifique sua conexão de internet</string>
+    <string name="error_load_messages">Não foi possível carregar as mensagens, tente novamente mais tarde</string>
+    <string name="error_send_message">Escreva uma mensagem</string>
+    <string name="error_message_send">Não foi possível enviar a mensagem</string>
+</resources>

@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "198991767403",
+    "project_id": "crowdmobi-analytics"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198991767403:android:1f113bdd11cb2cd6",
+        "android_client_info": {
+          "package_name": "br.com.ilhasoft.push_sample"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqBf9K9XGGuueCkgq6wX2VUPGUagrK1mU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
