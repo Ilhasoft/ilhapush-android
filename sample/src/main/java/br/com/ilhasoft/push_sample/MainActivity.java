@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import br.com.ilhasoft.flowrunner.models.Contact;
-import br.com.ilhasoft.push.ContactListener;
+import br.com.ilhasoft.push.listeners.ContactListener;
 import br.com.ilhasoft.push.IlhaPush;
 import br.com.ilhasoft.push.chat.ChatActivity;
 
@@ -44,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.chat).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+                Intent intent = ChatActivity.createIntent(MainActivity.this, R.mipmap.ic_launcher);
+                startActivity(intent);
             }
         });
     }

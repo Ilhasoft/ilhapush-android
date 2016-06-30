@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
 import br.com.ilhasoft.flowrunner.models.ApiResponse;
 import br.com.ilhasoft.flowrunner.models.Contact;
 import br.com.ilhasoft.flowrunner.models.Message;
 import br.com.ilhasoft.flowrunner.service.services.RapidProServices;
+import br.com.ilhasoft.push.listeners.ContactListener;
+import br.com.ilhasoft.push.listeners.LoadMessageListener;
+import br.com.ilhasoft.push.listeners.MessagesLoadingListener;
+import br.com.ilhasoft.push.listeners.SendMessageListener;
 import br.com.ilhasoft.push.persistence.Preferences;
 import br.com.ilhasoft.push.services.RegistrationIntentService;
 import okhttp3.ResponseBody;
@@ -52,7 +55,7 @@ public class IlhaPush {
         });
     }
 
-    public static void sendMessage(String message, final MessageListener listener) {
+    public static void sendMessage(String message, final SendMessageListener listener) {
         services.sendReceivedMessage(channel, preferences.getIdentity(), message).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -66,6 +69,26 @@ public class IlhaPush {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 listener.onError(throwable, context.getString(R.string.error_message_send));
+            }
+        });
+    }
+
+    public static void loadMessage(Integer messageId, final LoadMessageListener listener) {
+        RapidProServices services = new RapidProServices(getToken());
+        services.loadMessageById(messageId).enqueue(new Callback<ApiResponse<Message>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Message>> call, Response<ApiResponse<Message>> response) {
+                if (response.isSuccessful() && response.body().getResults() != null
+                && !response.body().getResults().isEmpty()) {
+                    listener.onMessageLoaded(response.body().getResults().get(0));
+                } else {
+                    listener.onError(getExceptionForErrorResponse(response), context.getString(R.string.error_load_message));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Message>> call, Throwable exception) {
+                listener.onError(exception, context.getString(R.string.error_load_message));
             }
         });
     }

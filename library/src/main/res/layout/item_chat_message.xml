@@ -4,40 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:clipToPadding="false"
     android:paddingBottom="3dp"
     tools:background="@android:color/darker_gray">
 
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/bubble"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-15dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:src="@drawable/ic_send_message" />
+
     <LinearLayout
-        android:id="@+id/bubble"
+        android:id="@id/bubble"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/icon"
+        android:layout_toRightOf="@id/icon"
         android:background="@drawable/bubble_other"
         android:layout_marginTop="3dp"
-        android:layout_marginBottom="3dp"
-        android:elevation="3dp">
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            tools:visibility="visible"
-            tools:text="steve"/>
+        android:layout_marginBottom="3dp">
 
         <TextView
             android:id="@+id/chatMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            tools:text="Mensagem do chat, testando" />
+            tools:text="Mensagem do chat, testando, testando Mensagem do chat, testando, testando Mensagem do chat, testando, testando Mensagem do chat, testando, testando " />
 
         <TextView
             android:id="@+id/chatMessageDate"
@@ -45,6 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="3dp"
+            android:textSize="12sp"
             tools:text="16:00"/>
 
     </LinearLayout>

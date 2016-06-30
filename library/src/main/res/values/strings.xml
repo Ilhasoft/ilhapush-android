@@ -5,4 +5,5 @@
     <string name="error_load_messages">Não foi possível carregar as mensagens, tente novamente mais tarde</string>
     <string name="error_send_message">Escreva uma mensagem</string>
     <string name="error_message_send">Não foi possível enviar a mensagem</string>
+    <string name="error_load_message">Não foi possível carregar a mensagem, tente novamente mais tarde</string>
 </resources>
