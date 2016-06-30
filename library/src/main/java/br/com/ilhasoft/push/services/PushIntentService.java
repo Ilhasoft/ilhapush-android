@@ -1,10 +1,13 @@
 package br.com.ilhasoft.push.services;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
 import br.com.ilhasoft.flowrunner.gcm.UdoIntentService;
+import br.com.ilhasoft.push.chat.ChatActivity;
 
 /**
  * Created by john-mac on 6/29/16.
@@ -21,5 +24,17 @@ public class PushIntentService extends UdoIntentService {
         Intent pushReceiveIntent = new Intent(ACTION_MESSAGE_RECEIVED);
         pushReceiveIntent.putExtra(EXTRA_DATA, data);
         LocalBroadcastManager.getInstance(this).sendBroadcast(pushReceiveIntent);
+    }
+
+    @Override
+    public void onCreateLocalNotication(NotificationCompat.Builder mBuilder) {
+        mBuilder.setContentIntent(createPendingIntent());
+        super.onCreateLocalNotication(mBuilder);
+    }
+
+    private PendingIntent createPendingIntent() {
+        Intent chatIntent = new Intent(this, ChatActivity.class);
+        chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 }

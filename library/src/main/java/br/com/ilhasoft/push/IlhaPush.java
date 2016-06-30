@@ -2,6 +2,7 @@ package br.com.ilhasoft.push;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -29,6 +30,7 @@ public class IlhaPush {
     private static String token;
     private static String channel;
     private static String gcmSenderId;
+    private static @DrawableRes int iconResource;
 
     private static Preferences preferences;
     private static RapidProServices services;
@@ -42,8 +44,17 @@ public class IlhaPush {
         IlhaPush.gcmSenderId = gcmSenderId;
         IlhaPush.preferences = new Preferences(context);
         IlhaPush.services = new RapidProServices(getToken());
+        IlhaPush.iconResource = R.drawable.ic_send_message;
 
         registerGcmIfNeeded(context);
+    }
+
+    public static void setIconResource(int iconResource) {
+        IlhaPush.iconResource = iconResource;
+    }
+
+    public static int getIconResource() {
+        return iconResource;
     }
 
     public static void sendMessage(String message) {

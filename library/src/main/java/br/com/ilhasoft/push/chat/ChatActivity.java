@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -37,25 +36,14 @@ public class ChatActivity extends AppCompatActivity {
 
     private static final String TAG = "ChatActivity";
 
-    private static final String EXTRA_ICON = "icon";
-
-    private int icon;
-
     private EditText message;
     private RecyclerView messageList;
     private ChatMessagesAdapter adapter;
-
-    public static Intent createIntent(Context context, @DrawableRes int icon) {
-        Intent chatIntent = new Intent(context, ChatActivity.class);
-        chatIntent.putExtra(EXTRA_ICON, icon);
-        return chatIntent;
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        icon = getIntent().getIntExtra(EXTRA_ICON, R.drawable.ic_send_message);
 
         setupView();
         loadMessages();
@@ -63,7 +51,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void setupView() {
         message = (EditText) findViewById(R.id.message);
-        adapter = new ChatMessagesAdapter(icon);
+        adapter = new ChatMessagesAdapter();
 
         SpaceItemDecoration spaceItemDecoration = new SpaceItemDecoration();
         spaceItemDecoration.setVerticalSpaceHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP
@@ -150,9 +138,19 @@ public class ChatActivity extends AppCompatActivity {
 
     private Message createChatMessage(String messageText) {
         Message chatMessage = new Message();
+        setId(chatMessage);
         chatMessage.setText(messageText);
         chatMessage.setCreatedOn(new Date());
         chatMessage.setDirection(Message.DIRECTION_INCOMING);
         return chatMessage;
+    }
+
+    private void setId(Message chatMessage) {
+        Message lastMessage = adapter.getLastMessage();
+        if (lastMessage != null) {
+            chatMessage.setId(lastMessage.getId()+1);
+        } else {
+            chatMessage.setId(0);
+        }
     }
 }

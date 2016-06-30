@@ -44,8 +44,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.chat).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = ChatActivity.createIntent(MainActivity.this, R.mipmap.ic_launcher);
-                startActivity(intent);
+                startActivity(new Intent(getApplicationContext(), ChatActivity.class));
             }
         });
     }

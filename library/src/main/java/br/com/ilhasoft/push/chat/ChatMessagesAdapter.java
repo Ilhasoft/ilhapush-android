@@ -1,13 +1,14 @@
 package br.com.ilhasoft.push.chat;
 
-import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.ilhasoft.flowrunner.models.Message;
+import br.com.ilhasoft.push.IlhaPush;
 
 /**
  * Created by johncordeiro on 7/21/15.
@@ -17,17 +18,15 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<Message> chatMessages;
 
     private ChatMessageViewHolder.OnChatMessageSelectedListener onChatMessageSelectedListener;
-    private int icon;
 
-    public ChatMessagesAdapter(@DrawableRes int icon) {
-        this.icon = icon;
+    public ChatMessagesAdapter() {
         this.chatMessages = new ArrayList<>();
         setHasStableIds(true);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ChatMessageViewHolder(parent.getContext(), parent, icon);
+        return new ChatMessageViewHolder(parent.getContext(), parent, IlhaPush.getIconResource());
     }
 
     @Override
@@ -46,6 +45,10 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemCount() {
         return chatMessages.size();
+    }
+
+    public Message getLastMessage() {
+        return chatMessages.get(0);
     }
 
     public void setMessages(List<Message> messages) {
