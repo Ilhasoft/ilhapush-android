@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/gray">
+    android:background="@color/gray"
+    android:animateLayoutChanges="true">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/messageList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/message"
+        android:layout_above="@+id/tags"
         android:layout_gravity="center"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:clipToPadding="false"/>
 
     <View
+        android:id="@+id/containerSeparator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/gray_dark"
-        android:layout_above="@id/message"/>
+        android:layout_above="@+id/message"/>
 
     <EditText
         android:id="@id/message"
@@ -49,6 +52,18 @@
         android:layout_alignTop="@+id/message"
         android:layout_alignParentBottom="true"
         android:background="@color/gray_dark"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/containerSeparator"
+        android:layout_gravity="center"
+        android:padding="5dp"
+        android:clipToPadding="false"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:layout_height="50dp"/>
 
     <ImageView
         android:id="@+id/sendMessage"

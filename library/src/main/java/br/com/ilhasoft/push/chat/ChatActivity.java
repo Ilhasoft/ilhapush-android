@@ -10,35 +10,35 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.util.Date;
 import java.util.List;
 
+import br.com.ilhasoft.flowrunner.managers.FlowRunnerManager;
 import br.com.ilhasoft.flowrunner.models.Message;
+import br.com.ilhasoft.flowrunner.models.Type;
 import br.com.ilhasoft.flowrunner.views.manager.SpaceItemDecoration;
-import br.com.ilhasoft.push.IlhaPush;
-import br.com.ilhasoft.push.listeners.LoadMessageListener;
-import br.com.ilhasoft.push.listeners.MessagesLoadingListener;
+import br.com.ilhasoft.push.chat.tags.OnTagClickListener;
+import br.com.ilhasoft.push.chat.tags.TagsAdapter;
 import br.com.ilhasoft.push.R;
 import br.com.ilhasoft.push.services.PushIntentService;
-import br.com.ilhasoft.push.util.BundleHelper;
 
 /**
  * Created by john-mac on 6/27/16.
  */
-public class ChatActivity extends AppCompatActivity {
-
-    private static final String TAG = "ChatActivity";
+public class ChatActivity extends AppCompatActivity implements ChatView {
 
     private EditText message;
     private RecyclerView messageList;
+    private RecyclerView tags;
     private ChatMessagesAdapter adapter;
+
+    private ChatPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,38 +46,35 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         setupView();
-        loadMessages();
+
+        presenter = new ChatPresenter(this);
+        presenter.loadMessages();
     }
 
     private void setupView() {
         message = (EditText) findViewById(R.id.message);
         adapter = new ChatMessagesAdapter();
 
-        SpaceItemDecoration spaceItemDecoration = new SpaceItemDecoration();
-        spaceItemDecoration.setVerticalSpaceHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP
-                , 5, getResources().getDisplayMetrics()));
+        int spacing = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP
+                , 5, getResources().getDisplayMetrics());
+
+        SpaceItemDecoration messagesItemDecoration = new SpaceItemDecoration();
+        messagesItemDecoration.setVerticalSpaceHeight(spacing);
 
         messageList = (RecyclerView) findViewById(R.id.messageList);
         messageList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true));
-        messageList.addItemDecoration(spaceItemDecoration);
+        messageList.addItemDecoration(messagesItemDecoration);
         messageList.setAdapter(adapter);
+
+        SpaceItemDecoration tagsItemDecoration = new SpaceItemDecoration();
+        tagsItemDecoration.setHorizontalSpaceWidth(spacing);
+
+        tags = (RecyclerView) findViewById(R.id.tags);
+        tags.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        tags.addItemDecoration(tagsItemDecoration);
 
         ImageView sendMessage = (ImageView) findViewById(R.id.sendMessage);
         sendMessage.setOnClickListener(onSendMessageClickListener);
-    }
-
-    private void loadMessages() {
-        IlhaPush.loadMessages(new MessagesLoadingListener() {
-            @Override
-            public void onMessagesLoaded(List<Message> messages) {
-                adapter.setMessages(messages);
-            }
-
-            @Override
-            public void onError(Throwable exception, String message) {
-                Toast.makeText(ChatActivity.this, message, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -97,23 +94,48 @@ public class ChatActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle data = intent.getBundleExtra(PushIntentService.EXTRA_DATA);
-            loadMessage(data);
+            presenter.loadMessage(data);
         }
     };
 
-    private void loadMessage(Bundle data) {
-        IlhaPush.loadMessage(BundleHelper.getMessageId(data), new LoadMessageListener() {
-            @Override
-            public void onMessageLoaded(Message message) {
-                adapter.addChatMessage(message);
-                messageList.scrollToPosition(0);
-            }
+    @Override
+    public void onMessagesLoaded(List<Message> messages) {
+        adapter.setMessages(messages);
+        onLastMessageChanged(adapter.getLastMessage());
+    }
 
-            @Override
-            public void onError(Throwable exception, String message) {
-                Log.d(TAG, "onError() called with: " + "exception = [" + exception + "], message = [" + message + "]");
+    @Override
+    public void onMessageLoaded(Message message) {
+        adapter.addChatMessage(message);
+        messageList.scrollToPosition(0);
+        onLastMessageChanged(message);
+    }
+
+    private void onLastMessageChanged(Message lastMessage) {
+        if (lastMessage != null && lastMessage.getRuleset() != null
+        && lastMessage.getRuleset().getRules() != null) {
+            Type type = presenter.getFirstType(lastMessage);
+            if (type == Type.Choice) {
+                TagsAdapter tagsAdapter = new TagsAdapter(lastMessage.getRuleset().getRules(), onTagClickListener);
+                tags.setAdapter(tagsAdapter);
+                tags.setVisibility(View.VISIBLE);
+            } else {
+                message.setInputType(FlowRunnerManager.getInputTypeByType(type));
+                tags.setVisibility(View.GONE);
             }
-        });
+        } else {
+            tags.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(ChatActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public Message getLastMessage() {
+        return adapter.getLastMessage();
     }
 
     private View.OnClickListener onSendMessageClickListener = new View.OnClickListener() {
@@ -121,36 +143,32 @@ public class ChatActivity extends AppCompatActivity {
         public void onClick(View view) {
             String messageText = message.getText().toString();
             if (!messageText.isEmpty()) {
-                addNewMessage(messageText);
-                IlhaPush.sendMessage(messageText);
+                presenter.sendMessage(messageText);
             } else {
                 message.setError(getString(R.string.error_send_message));
             }
         }
     };
 
-    private void addNewMessage(String messageText) {
-        adapter.addChatMessage(createChatMessage(messageText));
-        message.setError(null);
-        message.setText(null);
+    @Override
+    public void addNewMessage(String messageText) {
+        restoreView();
+
+        adapter.addChatMessage(presenter.createChatMessage(messageText));
         messageList.scrollToPosition(0);
     }
 
-    private Message createChatMessage(String messageText) {
-        Message chatMessage = new Message();
-        setId(chatMessage);
-        chatMessage.setText(messageText);
-        chatMessage.setCreatedOn(new Date());
-        chatMessage.setDirection(Message.DIRECTION_INCOMING);
-        return chatMessage;
+    private void restoreView() {
+        message.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        message.setError(null);
+        message.setText(null);
+        tags.setVisibility(View.GONE);
     }
 
-    private void setId(Message chatMessage) {
-        Message lastMessage = adapter.getLastMessage();
-        if (lastMessage != null) {
-            chatMessage.setId(lastMessage.getId()+1);
-        } else {
-            chatMessage.setId(0);
+    private OnTagClickListener onTagClickListener = new OnTagClickListener() {
+        @Override
+        public void onTagClick(String reply) {
+            presenter.sendMessage(reply);
         }
-    }
+    };
 }
