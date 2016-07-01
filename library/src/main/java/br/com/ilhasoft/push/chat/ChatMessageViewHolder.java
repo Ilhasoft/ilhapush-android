@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,7 +54,7 @@ public class ChatMessageViewHolder extends RecyclerView.ViewHolder {
 
     public void bindView(Message chatMessage) {
         this.chatMessage = chatMessage;
-        message.setText(chatMessage.getText());
+        message.setText(Html.fromHtml(chatMessage.getText()));
         date.setText(hourFormatter.format(chatMessage.getCreatedOn()));
 
         bindContainer(chatMessage);

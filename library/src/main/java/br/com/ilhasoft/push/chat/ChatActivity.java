@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.List;
 
 import br.com.ilhasoft.flowrunner.managers.FlowRunnerManager;
@@ -27,6 +28,7 @@ import br.com.ilhasoft.push.chat.tags.OnTagClickListener;
 import br.com.ilhasoft.push.chat.tags.TagsAdapter;
 import br.com.ilhasoft.push.R;
 import br.com.ilhasoft.push.services.PushIntentService;
+import br.com.ilhasoft.push.util.BundleHelper;
 
 /**
  * Created by john-mac on 6/27/16.
@@ -95,6 +97,11 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
         public void onReceive(Context context, Intent intent) {
             Bundle data = intent.getBundleExtra(PushIntentService.EXTRA_DATA);
             presenter.loadMessage(data);
+
+            Message message = BundleHelper.getMessage(data);
+            message.setCreatedOn(new Date());
+            adapter.addChatMessage(message);
+            onLastMessageChanged(message);
         }
     };
 
@@ -107,11 +114,11 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
     @Override
     public void onMessageLoaded(Message message) {
         adapter.addChatMessage(message);
-        messageList.scrollToPosition(0);
         onLastMessageChanged(message);
     }
 
     private void onLastMessageChanged(Message lastMessage) {
+        messageList.scrollToPosition(0);
         if (lastMessage != null && lastMessage.getRuleset() != null
         && lastMessage.getRuleset().getRules() != null) {
             Type type = presenter.getFirstType(lastMessage);

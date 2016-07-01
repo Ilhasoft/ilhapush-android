@@ -1,7 +1,6 @@
 package br.com.ilhasoft.push.chat;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -57,8 +56,14 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void addChatMessage(Message message) {
-        chatMessages.add(0, message);
-        notifyItemInserted(0);
+        int location = chatMessages.indexOf(message);
+        if (location >= 0) {
+            chatMessages.set(location, message);
+            notifyItemChanged(location);
+        } else {
+            chatMessages.add(0, message);
+            notifyItemInserted(0);
+        }
     }
 
     public void removeChatMessage(Message message) {
