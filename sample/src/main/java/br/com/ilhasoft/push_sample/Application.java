@@ -1,6 +1,7 @@
 package br.com.ilhasoft.push_sample;
 
 import br.com.ilhasoft.push.IlhaPush;
+import br.com.ilhasoft.push.UiConfiguration;
 
 /**
  * Created by john-mac on 6/28/16.
@@ -14,6 +15,8 @@ public class Application extends android.app.Application {
         IlhaPush.initialize(this, "Token bb207a615b7e6fae61c80e0d75a8975bc4e54815"
                 , "4ff7908b-911e-434a-90ed-8ae62c629121"
                 , "198991767403");
-        IlhaPush.setIconResource(R.mipmap.ic_launcher);
+        IlhaPush.setUiConfiguration(new UiConfiguration()
+                .setIconResource(R.mipmap.ic_launcher)
+                .setTitleString("Sample Title"));
     }
 }

@@ -25,14 +25,17 @@ public class ChatPresenter {
     }
 
     public void loadMessages() {
+        view.showLoading();
         IlhaPush.loadMessages(new MessagesLoadingListener() {
             @Override
             public void onMessagesLoaded(List<Message> messages) {
+                view.dismissLoading();
                 view.onMessagesLoaded(messages);
             }
 
             @Override
             public void onError(Throwable exception, String message) {
+                view.dismissLoading();
                 view.showMessage(message);
             }
         });

@@ -10,11 +10,13 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -24,6 +26,7 @@ import br.com.ilhasoft.flowrunner.managers.FlowRunnerManager;
 import br.com.ilhasoft.flowrunner.models.Message;
 import br.com.ilhasoft.flowrunner.models.Type;
 import br.com.ilhasoft.flowrunner.views.manager.SpaceItemDecoration;
+import br.com.ilhasoft.push.IlhaPush;
 import br.com.ilhasoft.push.chat.tags.OnTagClickListener;
 import br.com.ilhasoft.push.chat.tags.TagsAdapter;
 import br.com.ilhasoft.push.R;
@@ -38,6 +41,8 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
     private EditText message;
     private RecyclerView messageList;
     private RecyclerView tags;
+    private ProgressBar progressBar;
+
     private ChatMessagesAdapter adapter;
 
     private ChatPresenter presenter;
@@ -53,7 +58,11 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
         presenter.loadMessages();
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void setupView() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setupToolbar(toolbar);
+
         message = (EditText) findViewById(R.id.message);
         adapter = new ChatMessagesAdapter();
 
@@ -77,6 +86,26 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
 
         ImageView sendMessage = (ImageView) findViewById(R.id.sendMessage);
         sendMessage.setOnClickListener(onSendMessageClickListener);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void setupToolbar(Toolbar toolbar) {
+        if (getSupportActionBar() == null) {
+            toolbar.setVisibility(View.VISIBLE);
+            toolbar.setBackgroundColor(getResources().getColor(IlhaPush.getUiConfiguration().getToolbarColor()));
+            setSupportActionBar(toolbar);
+        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(IlhaPush.getUiConfiguration().getBackResource());
+        getSupportActionBar().setTitle(IlhaPush.getUiConfiguration().getTitleString());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
     }
 
     @Override
@@ -115,6 +144,16 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
     public void onMessageLoaded(Message message) {
         adapter.addChatMessage(message);
         onLastMessageChanged(message);
+    }
+
+    @Override
+    public void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void dismissLoading() {
+        progressBar.setVisibility(View.GONE);
     }
 
     private void onLastMessageChanged(Message lastMessage) {

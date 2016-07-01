@@ -25,7 +25,7 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ChatMessageViewHolder(parent.getContext(), parent, IlhaPush.getIconResource());
+        return new ChatMessageViewHolder(parent.getContext(), parent, IlhaPush.getUiConfiguration().getIconResource());
     }
 
     @Override

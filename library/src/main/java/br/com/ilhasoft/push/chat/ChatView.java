@@ -15,6 +15,10 @@ public interface ChatView {
 
     void onMessageLoaded(Message message);
 
+    void showLoading();
+
+    void dismissLoading();
+
     void showMessage(String message);
 
     Message getLastMessage();
