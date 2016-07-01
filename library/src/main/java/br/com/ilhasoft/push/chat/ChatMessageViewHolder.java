@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import java.text.DateFormat;
 
 import br.com.ilhasoft.flowrunner.models.Message;
 import br.com.ilhasoft.push.R;
+import br.com.ilhasoft.push.util.PicassoImageGetter;
 
 /**
  * Created by john-mac on 4/11/16.
@@ -36,6 +38,7 @@ public class ChatMessageViewHolder extends RecyclerView.ViewHolder {
 
     private final DateFormat hourFormatter;
     private final Context context;
+    private final PicassoImageGetter imageGetter;
 
     public ChatMessageViewHolder(Context context, ViewGroup parent, @DrawableRes int iconRes) {
         super(LayoutInflater.from(context).inflate(R.layout.item_chat_message, parent, false));
@@ -44,17 +47,19 @@ public class ChatMessageViewHolder extends RecyclerView.ViewHolder {
         this.parent = (ViewGroup) itemView.findViewById(R.id.bubble);
 
         this.message = (TextView) itemView.findViewById(R.id.chatMessage);
+        this.message.setMovementMethod(LinkMovementMethod.getInstance());
         this.date = (TextView) itemView.findViewById(R.id.chatMessageDate);
 
         this.icon = (ImageView) itemView.findViewById(R.id.icon);
         this.icon.setImageResource(iconRes);
 
         this.itemView.setOnLongClickListener(onLongClickListener);
+        this.imageGetter = new PicassoImageGetter(message, R.drawable.ic_error_outline_grey);
     }
 
     public void bindView(Message chatMessage) {
         this.chatMessage = chatMessage;
-        message.setText(Html.fromHtml(chatMessage.getText()));
+        message.setText(Html.fromHtml(chatMessage.getText(), imageGetter, null));
         date.setText(hourFormatter.format(chatMessage.getCreatedOn()));
 
         bindContainer(chatMessage);
