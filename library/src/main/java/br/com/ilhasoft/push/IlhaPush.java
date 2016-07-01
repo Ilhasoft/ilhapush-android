@@ -2,7 +2,6 @@ package br.com.ilhasoft.push;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -10,6 +9,7 @@ import br.com.ilhasoft.flowrunner.models.ApiResponse;
 import br.com.ilhasoft.flowrunner.models.Contact;
 import br.com.ilhasoft.flowrunner.models.Message;
 import br.com.ilhasoft.flowrunner.service.services.RapidProServices;
+import br.com.ilhasoft.push.chat.IlhaPushChatActivity;
 import br.com.ilhasoft.push.listeners.ContactListener;
 import br.com.ilhasoft.push.listeners.LoadMessageListener;
 import br.com.ilhasoft.push.listeners.MessagesLoadingListener;
@@ -51,6 +51,10 @@ public class IlhaPush {
 
     public static UiConfiguration getUiConfiguration() {
         return uiConfiguration;
+    }
+
+    public static void startIlhaPushChatActivity(Context context) {
+        context.startActivity(new Intent(context, IlhaPushChatActivity.class));
     }
 
     public static void setUiConfiguration(UiConfiguration uiConfiguration) {

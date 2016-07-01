@@ -36,7 +36,7 @@ import br.com.ilhasoft.push.util.BundleHelper;
 /**
  * Created by john-mac on 6/27/16.
  */
-public class ChatActivity extends AppCompatActivity implements ChatView {
+public class IlhaPushChatActivity extends AppCompatActivity implements ChatView {
 
     private EditText message;
     private RecyclerView messageList;
@@ -176,7 +176,7 @@ public class ChatActivity extends AppCompatActivity implements ChatView {
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(ChatActivity.this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(IlhaPushChatActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

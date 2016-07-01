@@ -7,7 +7,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
 import br.com.ilhasoft.flowrunner.gcm.UdoIntentService;
-import br.com.ilhasoft.push.chat.ChatActivity;
+import br.com.ilhasoft.push.chat.IlhaPushChatActivity;
 
 /**
  * Created by john-mac on 6/29/16.
@@ -33,7 +33,7 @@ public class PushIntentService extends UdoIntentService {
     }
 
     private PendingIntent createPendingIntent() {
-        Intent chatIntent = new Intent(this, ChatActivity.class);
+        Intent chatIntent = new Intent(this, IlhaPushChatActivity.class);
         chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         return PendingIntent.getActivity(this, 0, chatIntent, PendingIntent.FLAG_CANCEL_CURRENT);
     }

@@ -6,7 +6,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
 
-        <activity android:name=".chat.ChatActivity"/>
+        <activity android:name=".chat.IlhaPushChatActivity"/>
 
         <service
             android:name=".services.RegistrationIntentService"
