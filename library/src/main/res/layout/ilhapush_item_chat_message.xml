@@ -19,7 +19,7 @@
         android:layout_marginTop="-15dp"
         android:visibility="gone"
         tools:visibility="visible"
-        tools:src="@drawable/ic_send_message" />
+        tools:src="@drawable/ilhapush_ic_send_message" />
 
     <LinearLayout
         android:id="@id/bubble"
@@ -30,7 +30,7 @@
         android:layout_marginRight="10dp"
         android:layout_toEndOf="@id/icon"
         android:layout_toRightOf="@id/icon"
-        android:background="@drawable/bubble_other"
+        android:background="@drawable/ilhapush_bubble_other"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="3dp">
 

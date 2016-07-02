@@ -12,5 +12,5 @@
     android:maxLines="1"
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground"
-    android:background="@drawable/shape_round"
+    android:background="@drawable/ilhapush_shape_round"
     tools:text="Olhar Digital" />
