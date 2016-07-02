@@ -53,6 +53,6 @@ public class PushRegistrationIntentService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
-    public void onGcmRegistered(String pushIdentity, Contact contact){};
+    public void onGcmRegistered(String pushIdentity, Contact contact){}
 
 }
