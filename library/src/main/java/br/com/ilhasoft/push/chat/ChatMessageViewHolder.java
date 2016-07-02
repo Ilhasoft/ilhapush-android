@@ -41,7 +41,7 @@ public class ChatMessageViewHolder extends RecyclerView.ViewHolder {
     private final PicassoImageGetter imageGetter;
 
     public ChatMessageViewHolder(Context context, ViewGroup parent, @DrawableRes int iconRes) {
-        super(LayoutInflater.from(context).inflate(R.layout.item_chat_message, parent, false));
+        super(LayoutInflater.from(context).inflate(R.layout.ilhapush_item_chat_message, parent, false));
         this.context = context;
         this.hourFormatter = DateFormat.getTimeInstance(DateFormat.SHORT);
         this.parent = (ViewGroup) itemView.findViewById(R.id.bubble);
@@ -54,7 +54,7 @@ public class ChatMessageViewHolder extends RecyclerView.ViewHolder {
         this.icon.setImageResource(iconRes);
 
         this.itemView.setOnLongClickListener(onLongClickListener);
-        this.imageGetter = new PicassoImageGetter(message, R.drawable.ic_error_outline_grey);
+        this.imageGetter = new PicassoImageGetter(message, R.drawable.ilhapush_ic_error_outline_grey);
     }
 
     public void bindView(Message chatMessage) {
@@ -79,7 +79,7 @@ public class ChatMessageViewHolder extends RecyclerView.ViewHolder {
         params.rightMargin = userAuthor ? smallSpace : largeSpace;
         parent.setLayoutParams(params);
 
-        int drawable = userAuthor ? R.drawable.bubble_me : R.drawable.bubble_other;
+        int drawable = userAuthor ? R.drawable.ilhapush_bubble_me : R.drawable.ilhapush_bubble_other;
         parent.setBackgroundResource(drawable);
 
         int textColor = userAuthor ? Color.BLACK : Color.WHITE;

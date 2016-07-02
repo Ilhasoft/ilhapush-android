@@ -47,7 +47,7 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public Message getLastMessage() {
-        return chatMessages.get(0);
+        return chatMessages.isEmpty() ? null : chatMessages.get(0);
     }
 
     public void setMessages(List<Message> messages) {

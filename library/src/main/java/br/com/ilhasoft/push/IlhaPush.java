@@ -77,13 +77,13 @@ public class IlhaPush {
                 if (response.isSuccessful()) {
                     listener.onSendMessage();
                 } else {
-                    listener.onError(getExceptionForErrorResponse(response), context.getString(R.string.error_message_send));
+                    listener.onError(getExceptionForErrorResponse(response), context.getString(R.string.ilhapush_error_message_send));
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
-                listener.onError(throwable, context.getString(R.string.error_message_send));
+                listener.onError(throwable, context.getString(R.string.ilhapush_error_message_send));
             }
         });
     }
@@ -97,13 +97,13 @@ public class IlhaPush {
                 && !response.body().getResults().isEmpty()) {
                     listener.onMessageLoaded(response.body().getResults().get(0));
                 } else {
-                    listener.onError(getExceptionForErrorResponse(response), context.getString(R.string.error_load_message));
+                    listener.onError(getExceptionForErrorResponse(response), context.getString(R.string.ilhapush_error_load_message));
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Message>> call, Throwable exception) {
-                listener.onError(exception, context.getString(R.string.error_load_message));
+                listener.onError(exception, context.getString(R.string.ilhapush_error_load_message));
             }
         });
     }
@@ -116,13 +116,13 @@ public class IlhaPush {
                 if (response.isSuccessful()) {
                     listener.onMessagesLoaded(response.body().getResults());
                 } else {
-                    listener.onError(getExceptionForErrorResponse(response), context.getString(R.string.error_load_messages));
+                    listener.onError(getExceptionForErrorResponse(response), context.getString(R.string.ilhapush_error_load_messages));
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Message>> call, Throwable throwable) {
-                listener.onError(throwable, context.getString(R.string.error_load_messages));
+                listener.onError(throwable, context.getString(R.string.ilhapush_error_load_messages));
             }
         });
     }
@@ -144,13 +144,13 @@ public class IlhaPush {
                     listener.onContactSaved(response.body());
                 } else {
                     listener.onError(getExceptionForErrorResponse(response)
-                            , context.getString(R.string.error_contact_update));
+                            , context.getString(R.string.ilhapush_error_contact_update));
                 }
             }
 
             @Override
             public void onFailure(Call<Contact> call, Throwable throwable) {
-                listener.onError(throwable, context.getString(R.string.error_contact_update));
+                listener.onError(throwable, context.getString(R.string.ilhapush_error_contact_update));
             }
         });
     }

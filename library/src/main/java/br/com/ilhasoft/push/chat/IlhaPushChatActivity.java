@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,7 @@ import br.com.ilhasoft.flowrunner.models.Message;
 import br.com.ilhasoft.flowrunner.models.Type;
 import br.com.ilhasoft.flowrunner.views.manager.SpaceItemDecoration;
 import br.com.ilhasoft.push.IlhaPush;
+import br.com.ilhasoft.push.UiConfiguration;
 import br.com.ilhasoft.push.chat.tags.OnTagClickListener;
 import br.com.ilhasoft.push.chat.tags.TagsAdapter;
 import br.com.ilhasoft.push.R;
@@ -50,7 +53,7 @@ public class IlhaPushChatActivity extends AppCompatActivity implements ChatView 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.ilhapush_activity_chat);
 
         setupView();
 
@@ -94,12 +97,30 @@ public class IlhaPushChatActivity extends AppCompatActivity implements ChatView 
     private void setupToolbar(Toolbar toolbar) {
         if (getSupportActionBar() == null) {
             toolbar.setVisibility(View.VISIBLE);
-            toolbar.setBackgroundColor(getResources().getColor(IlhaPush.getUiConfiguration().getToolbarColor()));
+
+            int titleColorRes = IlhaPush.getUiConfiguration().getTitleColor();
+            toolbar.setTitleTextColor(getResources().getColor(titleColorRes));
+            toolbar.setBackgroundColor(getToolbarColor());
             setSupportActionBar(toolbar);
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(IlhaPush.getUiConfiguration().getBackResource());
         getSupportActionBar().setTitle(IlhaPush.getUiConfiguration().getTitleString());
+    }
+
+    @ColorInt
+    private int getToolbarColor() {
+        int toolbarColorResource = IlhaPush.getUiConfiguration().getToolbarColor();
+        return toolbarColorResource == UiConfiguration.INVALID_COLOR ? fetchColorPrimary() :
+                getResources().getColor(toolbarColorResource);
+    }
+
+    private int fetchColorPrimary() {
+        TypedValue typedValue = new TypedValue();
+        TypedArray typedArray = obtainStyledAttributes(typedValue.data, new int[] { R.attr.colorAccent });
+        int color = typedArray.getColor(0, 0);
+        typedArray.recycle();
+        return color;
     }
 
     @Override
@@ -191,7 +212,7 @@ public class IlhaPushChatActivity extends AppCompatActivity implements ChatView 
             if (!messageText.isEmpty()) {
                 presenter.sendMessage(messageText);
             } else {
-                message.setError(getString(R.string.error_send_message));
+                message.setError(getString(R.string.ilhapush_error_send_message));
             }
         }
     };

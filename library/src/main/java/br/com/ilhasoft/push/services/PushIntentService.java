@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Html;
 
 import br.com.ilhasoft.flowrunner.gcm.UdoIntentService;
 import br.com.ilhasoft.push.chat.IlhaPushChatActivity;
@@ -24,6 +25,11 @@ public class PushIntentService extends UdoIntentService {
         Intent pushReceiveIntent = new Intent(ACTION_MESSAGE_RECEIVED);
         pushReceiveIntent.putExtra(EXTRA_DATA, data);
         LocalBroadcastManager.getInstance(this).sendBroadcast(pushReceiveIntent);
+    }
+
+    @Override
+    public String handleNotificationMessage(String message) {
+        return Html.fromHtml(message).toString();
     }
 
     @Override

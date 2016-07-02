@@ -64,7 +64,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.ViewHolder> {
         private FlowRule rule;
 
         public ViewHolder(ViewGroup parent) {
-            super(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rule, null));
+            super(LayoutInflater.from(parent.getContext()).inflate(R.layout.ilhapush_item_rule, null));
             text = (TextView) itemView.findViewById(R.id.text);
             text.setOnClickListener(onTagClickListener);
         }

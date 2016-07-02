@@ -58,7 +58,7 @@
         android:imeOptions="actionSend|flagNoEnterAction"
         android:maxLines="3"
         android:background="@android:color/white"
-        android:hint="@string/hint_message" />
+        android:hint="@string/ilhapush_hint_message" />
 
     <View
         android:id="@+id/messageSeparator"

@@ -2,21 +2,25 @@ package br.com.ilhasoft.push;
 
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
 
 /**
  * Created by john-mac on 7/1/16.
  */
 public class UiConfiguration {
 
-    @DrawableRes
-    private int backResource = R.drawable.ic_arrow_back_white;
+    public static final int INVALID_COLOR = -1;
 
     @DrawableRes
-    private int iconResource = R.drawable.ic_send_message;
+    private int backResource = R.drawable.ilhapush_ic_arrow_back_white;
+
+    @DrawableRes
+    private int iconResource = R.drawable.ilhapush_ic_send_message;
 
     @ColorRes
-    private int toolbarColor = R.attr.colorPrimary;
+    private int toolbarColor = INVALID_COLOR;
+
+    @ColorRes
+    private int titleColor = android.R.color.white;
 
     private String titleString = "IlhaPush";
 
@@ -44,6 +48,15 @@ public class UiConfiguration {
 
     public UiConfiguration setToolbarColor(int toolbarColor) {
         this.toolbarColor = toolbarColor;
+        return this;
+    }
+
+    public int getTitleColor() {
+        return titleColor;
+    }
+
+    public UiConfiguration setTitleColor(int titleColor) {
+        this.titleColor = titleColor;
         return this;
     }
 
