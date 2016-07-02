@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import java.io.IOException;
+
 import br.com.ilhasoft.flowrunner.models.ApiResponse;
 import br.com.ilhasoft.flowrunner.models.Contact;
 import br.com.ilhasoft.flowrunner.models.Message;
@@ -15,7 +17,7 @@ import br.com.ilhasoft.push.listeners.LoadMessageListener;
 import br.com.ilhasoft.push.listeners.MessagesLoadingListener;
 import br.com.ilhasoft.push.listeners.SendMessageListener;
 import br.com.ilhasoft.push.persistence.Preferences;
-import br.com.ilhasoft.push.services.RegistrationIntentService;
+import br.com.ilhasoft.push.services.PushRegistrationIntentService;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +32,7 @@ public class IlhaPush {
     private static String token;
     private static String channel;
     private static String gcmSenderId;
+    private static Class<? extends PushRegistrationIntentService> registrationServiceClass;
     private static UiConfiguration uiConfiguration;
 
     private static Preferences preferences;
@@ -37,16 +40,18 @@ public class IlhaPush {
 
     IlhaPush() {}
 
-    public static void initialize(Context context, String token, String channel, String gcmSenderId) {
+    public static void initialize(Context context, String token, String channel, String gcmSenderId
+        , Class<? extends PushRegistrationIntentService> registrationServiceClass) {
         IlhaPush.context = context;
         IlhaPush.token = token;
         IlhaPush.channel = channel;
         IlhaPush.gcmSenderId = gcmSenderId;
+        IlhaPush.registrationServiceClass = registrationServiceClass;
         IlhaPush.preferences = new Preferences(context);
         IlhaPush.services = new RapidProServices(getToken());
         IlhaPush.uiConfiguration = new UiConfiguration();
 
-        registerGcmIfNeeded(context);
+        registerGcmIfNeeded();
     }
 
     public static UiConfiguration getUiConfiguration() {
@@ -133,6 +138,7 @@ public class IlhaPush {
         return contact;
     }
 
+
     public static void updateContact(final Contact contact, final ContactListener listener) {
         contact.setUuid(preferences.getContactUuid());
 
@@ -155,15 +161,25 @@ public class IlhaPush {
         });
     }
 
+    public static void updateContact(final Contact contact) throws IOException {
+        contact.setUuid(preferences.getContactUuid());
+
+        RapidProServices services = new RapidProServices(token);
+        services.saveContact(contact).execute();
+    }
+
+    public static void forceRegistration() {
+        context.startService(new Intent(context, registrationServiceClass));
+    }
+
     @NonNull
     private static IllegalStateException getExceptionForErrorResponse(Response response) {
         return new IllegalStateException("Response not successful. HTTP Code: " + response.code() + " Response: " + response.raw());
     }
 
-    private static void registerGcmIfNeeded(Context context) {
+    private static void registerGcmIfNeeded() {
         if (TextUtils.isEmpty(preferences.getIdentity())) {
-            Intent registrationIntent = RegistrationIntentService.createIntent(context);
-            context.startService(registrationIntent);
+            forceRegistration();
         }
     }
 

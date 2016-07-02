@@ -28,7 +28,7 @@ public class PushIntentService extends UdoIntentService {
     }
 
     @Override
-    public String handleNotificationMessage(String message) {
+    public final String handleNotificationMessage(String message) {
         return Html.fromHtml(message).toString();
     }
 
