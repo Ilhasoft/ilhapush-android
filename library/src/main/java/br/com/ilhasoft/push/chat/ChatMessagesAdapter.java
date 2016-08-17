@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ilhasoft.flowrunner.models.Contact;
 import br.com.ilhasoft.flowrunner.models.Message;
+import br.com.ilhasoft.push.IlhaPush;
 
 /**
  * Created by johncordeiro on 7/21/15.
@@ -15,26 +15,24 @@ import br.com.ilhasoft.flowrunner.models.Message;
 public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Message> chatMessages;
-    private Contact contact;
 
     private ChatMessageViewHolder.OnChatMessageSelectedListener onChatMessageSelectedListener;
 
-    public ChatMessagesAdapter(Contact contact) {
+    public ChatMessagesAdapter() {
         this.chatMessages = new ArrayList<>();
-        this.contact = contact;
         setHasStableIds(true);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ChatMessageViewHolder(parent.getContext(), parent);
+        return new ChatMessageViewHolder(parent.getContext(), parent, IlhaPush.getUiConfiguration().getIconResource());
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ChatMessageViewHolder chatMessageViewHolder = ((ChatMessageViewHolder)holder);
         chatMessageViewHolder.setOnChatMessageSelectedListener(onChatMessageSelectedListener);
-        chatMessageViewHolder.bindView(contact, chatMessages.get(position));
+        chatMessageViewHolder.bindView(chatMessages.get(position));
     }
 
     @Override
@@ -48,14 +46,24 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return chatMessages.size();
     }
 
+    public Message getLastMessage() {
+        return chatMessages.isEmpty() ? null : chatMessages.get(0);
+    }
+
     public void setMessages(List<Message> messages) {
         this.chatMessages = messages;
         notifyDataSetChanged();
     }
 
     public void addChatMessage(Message message) {
-        chatMessages.add(0, message);
-        notifyItemInserted(0);
+        int location = chatMessages.indexOf(message);
+        if (location >= 0) {
+            chatMessages.set(location, message);
+            notifyItemChanged(location);
+        } else {
+            chatMessages.add(0, message);
+            notifyItemInserted(0);
+        }
     }
 
     public void removeChatMessage(Message message) {
@@ -68,10 +76,6 @@ public class ChatMessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void setOnChatMessageSelectedListener(ChatMessageViewHolder.OnChatMessageSelectedListener onChatMessageSelectedListener) {
         this.onChatMessageSelectedListener = onChatMessageSelectedListener;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
     }
 
 }

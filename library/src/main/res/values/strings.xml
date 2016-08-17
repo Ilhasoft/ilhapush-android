@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">push</string>
-    <string name="hint_message">Escreva uma mensagem</string>
-    <string name="error_contact_update">Não foi possível salvar o contato, verifique sua conexão de internet</string>
-    <string name="error_load_messages">Não foi possível carregar as mensagens, tente novamente mais tarde</string>
-    <string name="error_send_message">Escreva uma mensagem</string>
-    <string name="error_message_send">Não foi possível enviar a mensagem</string>
+    <string name="ilhapush_app_name">IlhaPush</string>
+    <string name="ilhapush_hint_message">Escreva uma mensagem</string>
+    <string name="ilhapush_error_contact_update">Não foi possível salvar o contato, verifique sua conexão de internet</string>
+    <string name="ilhapush_error_load_messages">Não foi possível carregar as mensagens, tente novamente mais tarde</string>
+    <string name="ilhapush_error_send_message">Escreva uma mensagem</string>
+    <string name="ilhapush_error_message_send">Não foi possível enviar a mensagem</string>
+    <string name="ilhapush_error_load_message">Não foi possível carregar a mensagem, tente novamente mais tarde</string>
 </resources>
