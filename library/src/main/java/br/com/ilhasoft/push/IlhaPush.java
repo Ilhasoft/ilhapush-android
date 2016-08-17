@@ -67,19 +67,6 @@ public class IlhaPush {
         registerGcmIfNeeded();
     }
 
-    public static void initialize(Context context, String token, String channel, String gcmSenderId, UiConfiguration uiConfiguration) {
-        IlhaPush.context = context;
-        IlhaPush.token = token;
-        IlhaPush.channel = channel;
-        IlhaPush.gcmSenderId = gcmSenderId;
-        IlhaPush.registrationServiceClass = PushRegistrationIntentService.class;
-        IlhaPush.preferences = new Preferences(context);
-        IlhaPush.services = new RapidProServices(getToken());
-        IlhaPush.uiConfiguration = uiConfiguration;
-
-        registerGcmIfNeeded();
-    }
-
     public static UiConfiguration getUiConfiguration() {
         return uiConfiguration;
     }
