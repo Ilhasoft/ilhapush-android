@@ -11,7 +11,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/ilhapush_app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".Application">
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="br.com.ilhasoft.push.chat.ChatActivity" />
+        <activity android:name="br.com.ilhasoft.push.chat.IlhaPushChatActivity" />
 
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
@@ -35,10 +35,21 @@
         </receiver>
 
         <service
-            android:name=".ReceiverIntentService"
+            android:name=".services.ReceiverIntentService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".services.PushRegistrationService"
+            android:exported="false"/>
+
+        <service android:name="br.com.ilhasoft.push.services.PushInstanceIntentIdService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
             </intent-filter>
         </service>
 

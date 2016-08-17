@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="gray">#fafafa</color>
-    <color name="gray_dark">#e7e7e7</color>
+    <color name="ilhapush_gray">#fafafa</color>
+    <color name="ilhapush_gray_dark">#e7e7e7</color>
+    <color name="ilhapush_blue">#27a4e7</color>
 </resources>
