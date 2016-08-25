@@ -1,26 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/gray">
+    android:background="@color/ilhapush_gray"
+    android:animateLayoutChanges="true">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:visibility="gone"
+        tools:background="#00f"
+        tools:visibility="visible"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/messageList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/message"
-        android:layout_gravity="center"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@+id/tags"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:clipToPadding="false"/>
 
     <View
+        android:id="@+id/containerSeparator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/gray_dark"
-        android:layout_above="@id/message"/>
+        android:background="@color/ilhapush_gray_dark"
+        android:layout_above="@+id/message"/>
 
     <EditText
         android:id="@id/message"
@@ -38,7 +58,7 @@
         android:imeOptions="actionSend|flagNoEnterAction"
         android:maxLines="3"
         android:background="@android:color/white"
-        android:hint="@string/hint_message" />
+        android:hint="@string/ilhapush_hint_message" />
 
     <View
         android:id="@+id/messageSeparator"
@@ -48,7 +68,19 @@
         android:layout_toStartOf="@+id/sendMessage"
         android:layout_alignTop="@+id/message"
         android:layout_alignParentBottom="true"
-        android:background="@color/gray_dark"/>
+        android:background="@color/ilhapush_gray_dark"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/containerSeparator"
+        android:layout_gravity="center"
+        android:padding="5dp"
+        android:clipToPadding="false"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:layout_height="50dp"/>
 
     <ImageView
         android:id="@+id/sendMessage"
@@ -63,6 +95,6 @@
         android:background="@android:color/white"
         android:foreground="?attr/selectableItemBackground"
         android:clickable="true"
-        android:src="@drawable/ic_send_message" />
+        android:src="@drawable/ilhapush_ic_send_message" />
 
 </RelativeLayout>

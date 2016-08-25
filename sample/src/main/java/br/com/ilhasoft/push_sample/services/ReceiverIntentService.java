@@ -1,10 +1,9 @@
-package br.com.ilhasoft.push_sample;
+package br.com.ilhasoft.push_sample.services;
 
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import br.com.ilhasoft.flowrunner.gcm.UdoIntentService;
 import br.com.ilhasoft.push.R;
 import br.com.ilhasoft.push.services.PushIntentService;
 
@@ -24,7 +23,7 @@ public class ReceiverIntentService extends PushIntentService {
     @Override
     public void onCreateLocalNotication(NotificationCompat.Builder mBuilder) {
         mBuilder.setContentTitle(getString(br.com.ilhasoft.push_sample.R.string.title_message));
-        mBuilder.setSmallIcon(R.drawable.ic_send_message);
+        mBuilder.setSmallIcon(R.drawable.ilhapush_ic_send_message);
         super.onCreateLocalNotication(mBuilder);
     }
 }
