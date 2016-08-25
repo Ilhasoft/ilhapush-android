@@ -69,6 +69,12 @@ public class IlhaPush {
     }
 
     public static void startIlhaPushChatActivity(Context context) {
+        startIlhaPushChatActivity(context, token, channel);
+    }
+
+    public static void startIlhaPushChatActivity(Context context, String token, String channel) {
+        IlhaPush.token = token;
+        IlhaPush.channel = channel;
         context.startActivity(new Intent(context, IlhaPushChatActivity.class));
     }
 
