@@ -33,6 +33,7 @@ public class IlhaPush {
     private static String token;
     private static String channel;
     private static String gcmSenderId;
+    private static Boolean forceRegistration = false;
     private static Class<? extends PushRegistrationIntentService> registrationServiceClass;
     private static UiConfiguration uiConfiguration;
 
@@ -194,9 +195,13 @@ public class IlhaPush {
     }
 
     private static void registerGcmIfNeeded() {
-        if (TextUtils.isEmpty(preferences.getIdentity())) {
+        if (forceRegistration || TextUtils.isEmpty(preferences.getIdentity())) {
             forceRegistration();
         }
+    }
+
+    public static void setForceRegistration(Boolean forceRegistration) {
+        IlhaPush.forceRegistration = forceRegistration;
     }
 
     public static Preferences getPreferences() {
