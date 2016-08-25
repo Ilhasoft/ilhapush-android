@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import java.io.IOException;
 
+import br.com.ilhasoft.flowrunner.flow.ContactBuilder;
 import br.com.ilhasoft.flowrunner.models.ApiResponse;
 import br.com.ilhasoft.flowrunner.models.Contact;
 import br.com.ilhasoft.flowrunner.models.Message;
@@ -55,16 +56,11 @@ public class IlhaPush {
     }
 
     public static void initialize(Context context, String token, String channel, String gcmSenderId) {
-        IlhaPush.context = context;
-        IlhaPush.token = token;
-        IlhaPush.channel = channel;
-        IlhaPush.gcmSenderId = gcmSenderId;
-        IlhaPush.registrationServiceClass = PushRegistrationIntentService.class;
-        IlhaPush.preferences = new Preferences(context);
-        IlhaPush.services = new RapidProServices(getToken());
-        IlhaPush.uiConfiguration = new UiConfiguration();
+        initialize(context, token, channel, gcmSenderId, PushRegistrationIntentService.class);
+    }
 
-        registerGcmIfNeeded();
+    public static void initialize(Context context, String gcmSenderId, Class<? extends PushRegistrationIntentService> registrationServiceClass) {
+        initialize(context, null, null, gcmSenderId, registrationServiceClass);
     }
 
     public static UiConfiguration getUiConfiguration() {
@@ -179,6 +175,13 @@ public class IlhaPush {
 
         RapidProServices services = new RapidProServices(token);
         services.saveContact(contact).execute();
+    }
+
+    public static Response<Contact> saveContactWithToken(String gcmId, String token) throws java.io.IOException {
+        ContactBuilder contactBuilder = new ContactBuilder();
+        contactBuilder.setGcmId(gcmId);
+
+        return contactBuilder.saveContact(token).execute();
     }
 
     public static void forceRegistration() {
