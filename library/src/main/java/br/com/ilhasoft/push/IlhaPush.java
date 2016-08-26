@@ -133,9 +133,9 @@ public class IlhaPush {
         final RapidProServices services = new RapidProServices(getToken());
         String contactUuid = getPreferences().getContactUuid();
         if (!TextUtils.isEmpty(contactUuid)) {
-            loadContact(listener, services);
+            loadMessagesWithContact(services, contactUuid, listener);
         } else {
-            loadMessagesWithContact(services, getPreferences().getContactUuid(), listener);
+            loadContact(listener, services);
         }
     }
 
