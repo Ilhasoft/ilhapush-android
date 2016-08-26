@@ -80,6 +80,7 @@ public class IlhaPush {
     public static void startIlhaPushChatActivity(Context context, String token, String channel) {
         IlhaPush.token = token;
         IlhaPush.channel = channel;
+        IlhaPush.services = new RapidProServices(token);
         context.startActivity(new Intent(context, IlhaPushChatActivity.class));
     }
 
