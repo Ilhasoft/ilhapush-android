@@ -145,11 +145,11 @@ public class IlhaPush {
     }
 
     private static void loadContact(final MessagesLoadingListener listener, final RapidProServices services) {
-        services.loadContact("gcm:" + getPreferences().getIdentity()).enqueue(new Callback<Contact>() {
+        services.loadContactsByUrn("gcm:" + getPreferences().getIdentity()).enqueue(new Callback<ApiResponse<Contact>>() {
             @Override
-            public void onResponse(Call<Contact> call, Response<Contact> response) {
-                if (response.isSuccessful()) {
-                    Contact contact = response.body();
+            public void onResponse(Call<ApiResponse<Contact>> call, Response<ApiResponse<Contact>> response) {
+                if (response.isSuccessful() && response.body().getCount() > 0) {
+                    Contact contact = response.body().getResults().get(0);
                     loadMessagesWithContact(services, contact.getUuid(), listener);
                 } else {
                     listener.onError(getExceptionForErrorResponse(response)
@@ -158,7 +158,7 @@ public class IlhaPush {
             }
 
             @Override
-            public void onFailure(Call<Contact> call, Throwable throwable) {
+            public void onFailure(Call<ApiResponse<Contact>> call, Throwable throwable) {
                 listener.onError(throwable, context.getString(R.string.ilhapush_error_load_messages));
             }
         });
