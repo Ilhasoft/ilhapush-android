@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
+import android.text.TextUtils;
 
 import br.com.ilhasoft.flowrunner.gcm.UdoIntentService;
 import br.com.ilhasoft.push.chat.IlhaPushChatActivity;
@@ -29,7 +30,7 @@ public class PushIntentService extends UdoIntentService {
 
     @Override
     public final String handleNotificationMessage(String message) {
-        return Html.fromHtml(message).toString();
+        return !TextUtils.isEmpty(message) ? Html.fromHtml(message).toString() : message;
     }
 
     @Override
