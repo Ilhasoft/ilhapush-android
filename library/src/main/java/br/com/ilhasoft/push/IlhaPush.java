@@ -130,8 +130,37 @@ public class IlhaPush {
     }
 
     public static void loadMessages(final MessagesLoadingListener listener) {
-        RapidProServices services = new RapidProServices(getToken());
-        services.loadMessages(getPreferences().getContactUuid()).enqueue(new Callback<ApiResponse<Message>>() {
+        final RapidProServices services = new RapidProServices(getToken());
+        String contactUuid = getPreferences().getContactUuid();
+        if (!TextUtils.isEmpty(contactUuid)) {
+            loadContact(listener, services);
+        } else {
+            loadMessagesWithContact(services, getPreferences().getContactUuid(), listener);
+        }
+    }
+
+    private static void loadContact(final MessagesLoadingListener listener, final RapidProServices services) {
+        services.loadContact("gcm:" + getPreferences().getIdentity()).enqueue(new Callback<Contact>() {
+            @Override
+            public void onResponse(Call<Contact> call, Response<Contact> response) {
+                if (response.isSuccessful()) {
+                    Contact contact = response.body();
+                    loadMessagesWithContact(services, contact.getUuid(), listener);
+                } else {
+                    listener.onError(getExceptionForErrorResponse(response)
+                            , context.getString(R.string.ilhapush_error_load_messages));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Contact> call, Throwable throwable) {
+                listener.onError(throwable, context.getString(R.string.ilhapush_error_load_messages));
+            }
+        });
+    }
+
+    private static void loadMessagesWithContact(RapidProServices services, String contactUuid, final MessagesLoadingListener listener) {
+        services.loadMessages(contactUuid).enqueue(new Callback<ApiResponse<Message>>() {
             @Override
             public void onResponse(Call<ApiResponse<Message>> call, Response<ApiResponse<Message>> response) {
                 if (response.isSuccessful()) {
