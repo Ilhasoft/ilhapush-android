@@ -64,6 +64,11 @@ public class IlhaPush {
         initialize(context, null, null, gcmSenderId, registrationServiceClass);
     }
 
+    public static void initialize(Context context) {
+        IlhaPush.preferences = new Preferences(context);
+        IlhaPush.uiConfiguration = new UiConfiguration();
+    }
+
     public static UiConfiguration getUiConfiguration() {
         return uiConfiguration;
     }
