@@ -66,6 +66,7 @@ public class IlhaPush {
     }
 
     public static void initialize(Context context) {
+        IlhaPush.context = context;
         IlhaPush.preferences = new Preferences(context);
         IlhaPush.uiConfiguration = new UiConfiguration();
     }
