@@ -13,6 +13,7 @@ import br.com.ilhasoft.flowrunner.models.Contact;
 import br.com.ilhasoft.flowrunner.models.Message;
 import br.com.ilhasoft.flowrunner.service.services.RapidProServices;
 import br.com.ilhasoft.push.chat.IlhaPushChatActivity;
+import br.com.ilhasoft.push.chat.IlhaPushChatFragment;
 import br.com.ilhasoft.push.listeners.ContactListener;
 import br.com.ilhasoft.push.listeners.LoadMessageListener;
 import br.com.ilhasoft.push.listeners.MessagesLoadingListener;
@@ -75,6 +76,13 @@ public class IlhaPush {
 
     public static void startIlhaPushChatActivity(Context context) {
         startIlhaPushChatActivity(context, token, channel);
+    }
+
+    public static IlhaPushChatFragment getIlhaPushChatFragment(String token, String channel) {
+        IlhaPush.token = token;
+        IlhaPush.channel = channel;
+        IlhaPush.services = new RapidProServices(token);
+        return new IlhaPushChatFragment();
     }
 
     public static void startIlhaPushChatActivity(Context context, String token, String channel) {
