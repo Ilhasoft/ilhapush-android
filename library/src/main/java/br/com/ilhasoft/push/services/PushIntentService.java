@@ -23,9 +23,16 @@ public class PushIntentService extends UdoIntentService {
     public void onMessageReceived(String from, Bundle data) {
         super.onMessageReceived(from, data);
 
-        Intent pushReceiveIntent = new Intent(ACTION_MESSAGE_RECEIVED);
-        pushReceiveIntent.putExtra(EXTRA_DATA, data);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(pushReceiveIntent);
+        String type = data.getString("type");
+        if (isRapidproType(type)) {
+            Intent pushReceiveIntent = new Intent(ACTION_MESSAGE_RECEIVED);
+            pushReceiveIntent.putExtra(EXTRA_DATA, data);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(pushReceiveIntent);
+        }
+    }
+
+    private boolean isRapidproType(String type) {
+        return type != null && type.equals("Rapidpro");
     }
 
     @Override
