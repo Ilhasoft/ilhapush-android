@@ -4,22 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.TypedArray;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,9 +28,7 @@ import br.com.ilhasoft.flowrunner.managers.FlowRunnerManager;
 import br.com.ilhasoft.flowrunner.models.Message;
 import br.com.ilhasoft.flowrunner.models.Type;
 import br.com.ilhasoft.flowrunner.views.manager.SpaceItemDecoration;
-import br.com.ilhasoft.push.IlhaPush;
 import br.com.ilhasoft.push.R;
-import br.com.ilhasoft.push.UiConfiguration;
 import br.com.ilhasoft.push.chat.tags.OnTagClickListener;
 import br.com.ilhasoft.push.chat.tags.TagsAdapter;
 import br.com.ilhasoft.push.services.PushIntentService;
@@ -76,9 +66,6 @@ public class IlhaPushChatFragment extends Fragment implements ChatView {
 
     @SuppressWarnings("ConstantConditions")
     private void setupView(View view) {
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        setupToolbar(toolbar);
-
         message = (EditText) view.findViewById(R.id.message);
         adapter = new ChatMessagesAdapter();
 
@@ -104,51 +91,6 @@ public class IlhaPushChatFragment extends Fragment implements ChatView {
         sendMessage.setOnClickListener(onSendMessageClickListener);
 
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private void setupToolbar(Toolbar toolbar) {
-        if (getSupportActionBar() == null) {
-            toolbar.setVisibility(View.VISIBLE);
-
-            int titleColorRes = IlhaPush.getUiConfiguration().getTitleColor();
-            toolbar.setTitle(IlhaPush.getUiConfiguration().getTitleString());
-            toolbar.setTitleTextColor(getResources().getColor(titleColorRes));
-            toolbar.setBackgroundColor(getToolbarColor());
-            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        }else {
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setBackgroundDrawable(new ColorDrawable(getToolbarColor()));
-            setActionBarTitleColor(actionBar, IlhaPush.getUiConfiguration().getTitleString());
-        }
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(IlhaPush.getUiConfiguration().getBackResource());
-    }
-
-    private ActionBar getSupportActionBar() {
-        return ((AppCompatActivity) getActivity()).getSupportActionBar();
-    }
-
-    private void setActionBarTitleColor(ActionBar actionBar, String title){
-        Spannable text = new SpannableString(title);
-        int titleColorRes = IlhaPush.getUiConfiguration().getTitleColor();
-        text.setSpan(new ForegroundColorSpan(getResources().getColor(titleColorRes)), 0, text.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        actionBar.setTitle(text);
-    }
-
-    @ColorInt
-    private int getToolbarColor() {
-        int toolbarColorResource = IlhaPush.getUiConfiguration().getToolbarColor();
-        return toolbarColorResource == UiConfiguration.INVALID_COLOR ? fetchColorPrimary() :
-                getResources().getColor(toolbarColorResource);
-    }
-
-    private int fetchColorPrimary() {
-        TypedValue typedValue = new TypedValue();
-        TypedArray typedArray = getContext().obtainStyledAttributes(typedValue.data, new int[] { R.attr.colorPrimary });
-        int color = typedArray.getColor(0, 0);
-        typedArray.recycle();
-        return color;
     }
 
     @Override
