@@ -1,6 +1,7 @@
 package br.com.ilhasoft.push.chat;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -25,20 +26,22 @@ public class ChatPresenter {
     }
 
     public void loadMessages() {
-        view.showLoading();
-        IlhaPush.loadMessages(new MessagesLoadingListener() {
-            @Override
-            public void onMessagesLoaded(List<Message> messages) {
-                view.dismissLoading();
-                view.onMessagesLoaded(messages);
-            }
+        if (!TextUtils.isEmpty(IlhaPush.getPreferences().getIdentity())) {
+            view.showLoading();
+            IlhaPush.loadMessages(new MessagesLoadingListener() {
+                @Override
+                public void onMessagesLoaded(List<Message> messages) {
+                    view.dismissLoading();
+                    view.onMessagesLoaded(messages);
+                }
 
-            @Override
-            public void onError(Throwable exception, String message) {
-                view.dismissLoading();
-                view.showMessage(message);
-            }
-        });
+                @Override
+                public void onError(Throwable exception, String message) {
+                    view.dismissLoading();
+                    view.showMessage(message);
+                }
+            });
+        }
     }
 
     public void loadMessage(Bundle data) {

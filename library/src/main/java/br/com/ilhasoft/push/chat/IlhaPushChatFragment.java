@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -31,6 +30,7 @@ import br.com.ilhasoft.flowrunner.views.manager.SpaceItemDecoration;
 import br.com.ilhasoft.push.R;
 import br.com.ilhasoft.push.chat.tags.OnTagClickListener;
 import br.com.ilhasoft.push.chat.tags.TagsAdapter;
+import br.com.ilhasoft.push.persistence.Preferences;
 import br.com.ilhasoft.push.services.PushIntentService;
 import br.com.ilhasoft.push.util.BundleHelper;
 
@@ -62,6 +62,15 @@ public class IlhaPushChatFragment extends Fragment implements ChatView {
 
         presenter = new ChatPresenter(this);
         presenter.loadMessages();
+
+        IntentFilter registrationFilter = new IntentFilter(Preferences.REGISTRATION_COMPLETE);
+        getActivity().registerReceiver(onRegisteredReceiver, registrationFilter);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().unregisterReceiver(onRegisteredReceiver);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -195,6 +204,13 @@ public class IlhaPushChatFragment extends Fragment implements ChatView {
         message.setText(null);
         tags.setVisibility(View.GONE);
     }
+
+    private BroadcastReceiver onRegisteredReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            presenter.loadMessages();
+        }
+    };
 
     private OnTagClickListener onTagClickListener = new OnTagClickListener() {
         @Override
