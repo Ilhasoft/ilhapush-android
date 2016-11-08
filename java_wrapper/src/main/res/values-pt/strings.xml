@@ -1,0 +1,18 @@
+<resources>
+    <string name="label_next_question">Próximo</string>
+    <string name="label_finish">Finalizar</string>
+
+    <string name="error_choose_answer">Você precisa escolher uma opção!</string>
+    <string name="label_hint_response">Resposta</string>
+
+    <string name="error_fill_field">Por favor, preencha todos os campos</string>
+    <string name="error_invalid_field">Campo inválido, verifique as instruções acima</string>
+    <string name="error_numeric_field">Campo númerico inválido</string>
+    <string name="error_numeric_instruction_field">Campo númerico inválido, verifique as instruções acima</string>
+    <string name="error_date_field">Data com valor inválido, verifique as instruções acima</string>
+    <string name="label_finish_poll">Finalizar</string>
+    <string name="label_finish_message">Enquete finalizada com sucesso!</string>
+    <string name="message_title_languages">Mude o idioma da enquete:</string>
+    <string name="title_change_language">Mudar idioma</string>
+
+</resources>
