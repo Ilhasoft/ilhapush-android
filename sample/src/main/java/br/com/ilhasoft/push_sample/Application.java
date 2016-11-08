@@ -2,6 +2,7 @@ package br.com.ilhasoft.push_sample;
 
 import br.com.ilhasoft.push.IlhaPush;
 import br.com.ilhasoft.push.UiConfiguration;
+import br.com.ilhasoft.push_sample.services.PushRegistrationService;
 
 /**
  * Created by john-mac on 6/28/16.
@@ -12,13 +13,13 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
-        IlhaPush.initialize(new IlhaPush.Builder()
-                            .setContext(this)
-                            .setHost("https://push-staging.ilhasoft.mobi")
-                            .setToken("633567b35380a19c0e14556e9b2f702468b2f941")
-                            .setChannel("e3c213ad-428f-4064-8fc1-1f490d201f02")
+        IlhaPush.initialize(new IlhaPush.Builder(this)
+                            .setHost("http://push-staging.ilhasoft.mobi/")
+                            .setToken("786cf3068e587315c6592a4883090b5de74069ff")
+                            .setChannel("43231717-982f-433f-932e-26791eb285a2")
+                            .setRegistrationServiceClass(PushRegistrationService.class)
                             .setUiConfiguration(new UiConfiguration()
                                     .setIconResource(R.mipmap.ic_launcher)
-                                    .setTitleString("Sample Title")));
+                                    .setTitleString("RapidCon")));
     }
 }

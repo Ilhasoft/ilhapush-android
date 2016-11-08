@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Contact contact = new Contact();
                 contact.setEmail("johndcc@gmail.com");
-                contact.setName("John Chat");
+                contact.setName("John");
                 IlhaPush.updateContact(contact, new ContactListener() {
                     @Override
                     public void onContactSaved(Contact contact) {

@@ -45,7 +45,7 @@ public class PushIntentService extends FirebaseMessagingService {
             pushReceiveIntent.putExtra(KEY_DATA, BundleHelper.convertToBundleFrom(data));
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushReceiveIntent);
 
-            showLocalNotification(data.get(KEY_MESSAGE), data.get(KEY_TITLE));
+            showLocalNotification(data.get(KEY_TITLE), data.get(KEY_MESSAGE));
         }
     }
 

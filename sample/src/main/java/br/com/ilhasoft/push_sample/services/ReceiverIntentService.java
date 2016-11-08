@@ -15,7 +15,6 @@ public class ReceiverIntentService extends PushIntentService {
 
     @Override
     public void onCreateLocalNotification(NotificationCompat.Builder mBuilder) {
-        mBuilder.setContentTitle(getString(br.com.ilhasoft.push_sample.R.string.title_message));
         mBuilder.setSmallIcon(R.drawable.ilhapush_ic_send_message);
         super.onCreateLocalNotification(mBuilder);
     }
