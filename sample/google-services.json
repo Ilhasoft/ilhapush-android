@@ -1,20 +1,35 @@
 {
   "project_info": {
-    "project_number": "198991767403",
-    "project_id": "crowdmobi-analytics"
+    "project_number": "335195314668",
+    "firebase_url": "https://ilhapush-dev.firebaseio.com",
+    "project_id": "ilhapush-dev",
+    "storage_bucket": "ilhapush-dev.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:198991767403:android:1f113bdd11cb2cd6",
+        "mobilesdk_app_id": "1:335195314668:android:1f113bdd11cb2cd6",
         "android_client_info": {
           "package_name": "br.com.ilhasoft.push_sample"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "335195314668-i9cdv51bqn10su3740o3lf8s5rpr5u4a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.ilhasoft.push_sample",
+            "certificate_hash": "EB6145FCCC4179B8589B3F55226266D62D7CEA87"
+          }
+        },
+        {
+          "client_id": "335195314668-l0254iq7465u7cj22ev0mb6622lq5875.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAqBf9K9XGGuueCkgq6wX2VUPGUagrK1mU"
+          "current_key": "AIzaSyA9x5gdujKErA1HL-8OTbCzix0lxe9UZEA"
         }
       ],
       "services": {
@@ -22,11 +37,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "335195314668-l0254iq7465u7cj22ev0mb6622lq5875.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
