@@ -153,7 +153,7 @@ public class IlhaPushChatFragment extends Fragment implements ChatView {
     private void onLastMessageChanged(Message lastMessage) {
         messageList.scrollToPosition(0);
         if (lastMessage != null && lastMessage.getRuleset() != null
-                && lastMessage.getRuleset().getRules() != null) {
+        && lastMessage.getRuleset().getRules() != null) {
             Type type = presenter.getFirstType(lastMessage);
             if (type == Type.Choice) {
                 TagsAdapter tagsAdapter = new TagsAdapter(lastMessage.getRuleset().getRules(), onTagClickListener);
