@@ -1,6 +1,6 @@
 package br.com.ilhasoft.push.listeners;
 
-import br.com.ilhasoft.flowrunner.models.Contact;
+import br.com.ilhasoft.push.java_wrapper.models.Contact;
 
 /**
  * Created by john-mac on 6/28/16.

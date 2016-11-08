@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import br.com.ilhasoft.flowrunner.models.FlowRule;
-import br.com.ilhasoft.flowrunner.models.TypeValidation;
+import br.com.ilhasoft.push.java_wrapper.models.FlowRule;
+import br.com.ilhasoft.push.java_wrapper.models.TypeValidation;
 import br.com.ilhasoft.push.R;
 
 /**

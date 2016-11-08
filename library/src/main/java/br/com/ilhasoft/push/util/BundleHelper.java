@@ -2,7 +2,9 @@ package br.com.ilhasoft.push.util;
 
 import android.os.Bundle;
 
-import br.com.ilhasoft.flowrunner.models.Message;
+import java.util.Map;
+
+import br.com.ilhasoft.push.java_wrapper.models.Message;
 
 /**
  * Created by john-mac on 6/29/16.
@@ -26,6 +28,14 @@ public class BundleHelper {
         message.setText(getMessageText(data));
         message.setDirection(Message.DIRECTION_OUTGOING);
         return message;
+    }
+
+    public static Bundle convertToBundleFrom(Map<String, String> data) {
+        Bundle bundle = new Bundle();
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            bundle.putString(entry.getKey(), entry.getValue());
+        }
+        return bundle;
     }
 
 }

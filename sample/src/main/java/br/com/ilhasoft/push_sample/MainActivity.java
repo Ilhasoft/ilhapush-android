@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import br.com.ilhasoft.flowrunner.models.Contact;
+import br.com.ilhasoft.push.java_wrapper.models.Contact;
 import br.com.ilhasoft.push.listeners.ContactListener;
 import br.com.ilhasoft.push.IlhaPush;
 

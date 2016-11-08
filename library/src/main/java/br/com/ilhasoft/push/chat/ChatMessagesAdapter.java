@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ilhasoft.flowrunner.models.Message;
+import br.com.ilhasoft.push.java_wrapper.models.Message;
 import br.com.ilhasoft.push.IlhaPush;
 
 /**

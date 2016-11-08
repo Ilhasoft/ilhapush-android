@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 
-import br.com.ilhasoft.flowrunner.models.Message;
+import br.com.ilhasoft.push.java_wrapper.models.Message;
 import br.com.ilhasoft.push.R;
 import br.com.ilhasoft.push.util.PicassoImageGetter;
 
