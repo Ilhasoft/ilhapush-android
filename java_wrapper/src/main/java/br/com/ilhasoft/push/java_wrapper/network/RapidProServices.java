@@ -16,6 +16,7 @@ import br.com.ilhasoft.push.java_wrapper.models.Message;
 import br.com.ilhasoft.push.java_wrapper.adapters.HashMapTypeAdapter;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -48,6 +49,12 @@ public class RapidProServices {
     }
 
     private void buildApi() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
+
         gsonDateTypeAdapter = new GsonDateTypeAdapter();
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -57,7 +64,7 @@ public class RapidProServices {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(host)
-                .client(new OkHttpClient.Builder().build())
+                .client(client)
                 .addConverterFactory (GsonConverterFactory.create(gson))
                 .build();
 

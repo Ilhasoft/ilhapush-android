@@ -46,8 +46,8 @@ public class ContactBuilder {
         return this;
     }
 
-    public Call<Contact> saveContact(String token) {
-        RapidProServices rapidProServices = new RapidProServices(token);
+    public Call<Contact> saveContact(String host, String token) {
+        RapidProServices rapidProServices = new RapidProServices(host, token);
         return rapidProServices.saveContact(contact);
     }
 }
