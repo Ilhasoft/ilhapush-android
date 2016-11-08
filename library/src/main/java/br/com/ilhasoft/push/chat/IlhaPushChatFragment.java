@@ -23,16 +23,16 @@ import android.widget.Toast;
 import java.util.Date;
 import java.util.List;
 
-import br.com.ilhasoft.flowrunner.managers.FlowRunnerManager;
-import br.com.ilhasoft.flowrunner.models.Message;
-import br.com.ilhasoft.flowrunner.models.Type;
-import br.com.ilhasoft.flowrunner.views.manager.SpaceItemDecoration;
+import br.com.ilhasoft.push.java_wrapper.managers.FlowRunnerManager;
+import br.com.ilhasoft.push.java_wrapper.models.Message;
+import br.com.ilhasoft.push.java_wrapper.models.Type;
 import br.com.ilhasoft.push.R;
 import br.com.ilhasoft.push.chat.tags.OnTagClickListener;
 import br.com.ilhasoft.push.chat.tags.TagsAdapter;
 import br.com.ilhasoft.push.persistence.Preferences;
 import br.com.ilhasoft.push.services.PushIntentService;
 import br.com.ilhasoft.push.util.BundleHelper;
+import br.com.ilhasoft.push.util.SpaceItemDecoration;
 
 /**
  * Created by john-mac on 8/30/16.
@@ -118,7 +118,7 @@ public class IlhaPushChatFragment extends Fragment implements ChatView {
     private BroadcastReceiver messagesReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Bundle data = intent.getBundleExtra(PushIntentService.EXTRA_DATA);
+            Bundle data = intent.getBundleExtra(PushIntentService.KEY_DATA);
             presenter.loadMessage(data);
 
             Message message = BundleHelper.getMessage(data);

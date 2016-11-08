@@ -7,19 +7,19 @@ import android.text.TextUtils;
 
 import java.io.IOException;
 
-import br.com.ilhasoft.flowrunner.flow.ContactBuilder;
-import br.com.ilhasoft.flowrunner.models.ApiResponse;
-import br.com.ilhasoft.flowrunner.models.Contact;
-import br.com.ilhasoft.flowrunner.models.Message;
-import br.com.ilhasoft.flowrunner.service.services.RapidProServices;
+import br.com.ilhasoft.push.java_wrapper.models.ApiResponse;
+import br.com.ilhasoft.push.java_wrapper.network.RapidProServices;
 import br.com.ilhasoft.push.chat.IlhaPushChatActivity;
 import br.com.ilhasoft.push.chat.IlhaPushChatFragment;
 import br.com.ilhasoft.push.listeners.ContactListener;
 import br.com.ilhasoft.push.listeners.LoadMessageListener;
 import br.com.ilhasoft.push.listeners.MessagesLoadingListener;
 import br.com.ilhasoft.push.listeners.SendMessageListener;
+import br.com.ilhasoft.push.java_wrapper.models.Contact;
+import br.com.ilhasoft.push.java_wrapper.models.Message;
 import br.com.ilhasoft.push.persistence.Preferences;
 import br.com.ilhasoft.push.services.PushRegistrationIntentService;
+import br.com.ilhasoft.push.java_wrapper.adapters.ContactBuilder;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +33,6 @@ public class IlhaPush {
     private static Context context;
     private static String token;
     private static String channel;
-    private static String gcmSenderId;
     private static Boolean forceRegistration = false;
     private static Class<? extends PushRegistrationIntentService> registrationServiceClass;
     private static UiConfiguration uiConfiguration;
@@ -43,12 +42,11 @@ public class IlhaPush {
 
     IlhaPush() {}
 
-    public static void initialize(Context context, String token, String channel, String gcmSenderId
+    public static void initialize(Context context, String token, String channel
         , Class<? extends PushRegistrationIntentService> registrationServiceClass) {
         IlhaPush.context = context;
         IlhaPush.token = token;
         IlhaPush.channel = channel;
-        IlhaPush.gcmSenderId = gcmSenderId;
         IlhaPush.registrationServiceClass = registrationServiceClass;
         IlhaPush.preferences = new Preferences(context);
         IlhaPush.services = new RapidProServices(getToken());
@@ -57,12 +55,12 @@ public class IlhaPush {
         registerGcmIfNeeded();
     }
 
-    public static void initialize(Context context, String token, String channel, String gcmSenderId) {
-        initialize(context, token, channel, gcmSenderId, PushRegistrationIntentService.class);
+    public static void initialize(Context context, String token, String channel) {
+        initialize(context, token, channel, PushRegistrationIntentService.class);
     }
 
-    public static void initialize(Context context, String gcmSenderId, Class<? extends PushRegistrationIntentService> registrationServiceClass) {
-        initialize(context, null, null, gcmSenderId, registrationServiceClass);
+    public static void initialize(Context context, Class<? extends PushRegistrationIntentService> registrationServiceClass) {
+        initialize(context, null, null, registrationServiceClass);
     }
 
     public static void initialize(Context context) {
@@ -155,7 +153,7 @@ public class IlhaPush {
     }
 
     private static void loadContact(final MessagesLoadingListener listener, final RapidProServices services) {
-        services.loadContactsByUrn("gcm:" + getPreferences().getIdentity()).enqueue(new Callback<ApiResponse<Contact>>() {
+        services.loadContactsByUrn("fcm:" + getPreferences().getIdentity()).enqueue(new Callback<ApiResponse<Contact>>() {
             @Override
             public void onResponse(Call<ApiResponse<Contact>> call, Response<ApiResponse<Contact>> response) {
                 if (response.isSuccessful() && response.body().getCount() > 0) {
@@ -228,9 +226,9 @@ public class IlhaPush {
         services.saveContact(contact).execute();
     }
 
-    public static Response<Contact> saveContactWithToken(String gcmId, String token) throws java.io.IOException {
+    public static Response<Contact> saveContactWithToken(String pushToken, String token) throws java.io.IOException {
         ContactBuilder contactBuilder = new ContactBuilder();
-        contactBuilder.setGcmId(gcmId);
+        contactBuilder.setFcmId(pushToken);
 
         return contactBuilder.saveContact(token).execute();
     }
@@ -268,9 +266,5 @@ public class IlhaPush {
 
     public static String getChannel() {
         return channel;
-    }
-
-    public static String getGcmSenderId() {
-        return gcmSenderId;
     }
 }

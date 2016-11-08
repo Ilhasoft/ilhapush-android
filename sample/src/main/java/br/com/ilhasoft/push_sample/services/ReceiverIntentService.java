@@ -1,8 +1,9 @@
 package br.com.ilhasoft.push_sample.services;
 
-import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import com.google.firebase.messaging.RemoteMessage;
 
 import br.com.ilhasoft.push.R;
 import br.com.ilhasoft.push.services.PushIntentService;
@@ -12,18 +13,10 @@ import br.com.ilhasoft.push.services.PushIntentService;
  */
 public class ReceiverIntentService extends PushIntentService {
 
-    private static final String TAG = "ReceiverIntentService";
-
     @Override
-    public void onMessageReceived(String from, Bundle data) {
-        super.onMessageReceived(from, data);
-        Log.d(TAG, "onMessageReceived() called with: " + "from = [" + from + "], data = [" + data + "]");
-    }
-
-    @Override
-    public void onCreateLocalNotication(NotificationCompat.Builder mBuilder) {
+    public void onCreateLocalNotification(NotificationCompat.Builder mBuilder) {
         mBuilder.setContentTitle(getString(br.com.ilhasoft.push_sample.R.string.title_message));
         mBuilder.setSmallIcon(R.drawable.ilhapush_ic_send_message);
-        super.onCreateLocalNotication(mBuilder);
+        super.onCreateLocalNotification(mBuilder);
     }
 }

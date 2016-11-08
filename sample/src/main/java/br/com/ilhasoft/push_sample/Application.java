@@ -13,9 +13,8 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
-        IlhaPush.initialize(this, "Token bb207a615b7e6fae61c80e0d75a8975bc4e54815"
-                , "cd617363-da79-4920-a170-5def869928d5"
-                , "198991767403", PushRegistrationService.class);
+        IlhaPush.initialize(this, "Token 633567b35380a19c0e14556e9b2f702468b2f941"
+                , "61421d58-7f77-418b-83c3-9cce0c8888c4", PushRegistrationService.class);
         IlhaPush.setUiConfiguration(new UiConfiguration()
                 .setIconResource(R.mipmap.ic_launcher)
                 .setTitleString("Sample Title"));

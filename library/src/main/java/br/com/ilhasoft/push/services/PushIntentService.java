@@ -1,49 +1,82 @@
 package br.com.ilhasoft.push.services;
 
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Html;
 import android.text.TextUtils;
 
-import br.com.ilhasoft.flowrunner.gcm.UdoIntentService;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.Map;
+
 import br.com.ilhasoft.push.chat.IlhaPushChatActivity;
+import br.com.ilhasoft.push.util.BundleHelper;
 
 /**
  * Created by john-mac on 6/29/16.
  */
-public class PushIntentService extends UdoIntentService {
+public class PushIntentService extends FirebaseMessagingService {
 
-    public static final String EXTRA_DATA = "data";
     public static final String ACTION_MESSAGE_RECEIVED = "br.com.ilhasoft.push.MESSAGE_RECEIVED";
+    private static final String TYPE_RAPIDPRO = "rapidpro";
+
+    private static final int NOTIFICATION_ID = 30;
+
+    public static final String KEY_DATA = "data";
+    private static final String KEY_TYPE = "type";
+    private static final String KEY_MESSAGE = "message";
+    private static final String KEY_TITLE = "title";
 
     @Override
-    public void onMessageReceived(String from, Bundle data) {
-        super.onMessageReceived(from, data);
+    public final void onMessageReceived(RemoteMessage remoteMessage) {
+        super.onMessageReceived(remoteMessage);
 
-        String type = data.getString("type");
+        Map<String, String> data = remoteMessage.getData();
+        String type = data.get(KEY_TYPE);
+
         if (isRapidproType(type)) {
             Intent pushReceiveIntent = new Intent(ACTION_MESSAGE_RECEIVED);
-            pushReceiveIntent.putExtra(EXTRA_DATA, data);
+            pushReceiveIntent.putExtra(KEY_DATA, BundleHelper.convertToBundleFrom(data));
             LocalBroadcastManager.getInstance(this).sendBroadcast(pushReceiveIntent);
+
+            showLocalNotification(data.get(KEY_MESSAGE), data.get(KEY_TITLE));
         }
     }
 
-    private boolean isRapidproType(String type) {
-        return type != null && type.equals("Rapidpro");
+    private void showLocalNotification(String title, String message) {
+        message = handleNotificationMessage(message);
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(getApplicationContext())
+                        .setSmallIcon(getApplicationInfo().icon)
+                        .setContentTitle(title)
+                        .setContentText(message)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(message))
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setAutoCancel(true);
+        mBuilder.setContentIntent(createPendingIntent());
+        onCreateLocalNotification(mBuilder);
     }
 
-    @Override
-    public final String handleNotificationMessage(String message) {
+    protected void onCreateLocalNotification(NotificationCompat.Builder builder) {
+        NotificationManager mNotificationManager =
+                (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
+
+    private String handleNotificationMessage(String message) {
         return !TextUtils.isEmpty(message) ? Html.fromHtml(message).toString() : message;
     }
 
-    @Override
-    public void onCreateLocalNotication(NotificationCompat.Builder mBuilder) {
-        mBuilder.setContentIntent(createPendingIntent());
-        super.onCreateLocalNotication(mBuilder);
+    private boolean isRapidproType(String type) {
+        return type != null && type.equals(TYPE_RAPIDPRO);
     }
 
     private PendingIntent createPendingIntent() {

@@ -4,7 +4,7 @@ import android.util.Log;
 
 import java.io.IOException;
 
-import br.com.ilhasoft.flowrunner.models.Contact;
+import br.com.ilhasoft.push.java_wrapper.models.Contact;
 import br.com.ilhasoft.push.IlhaPush;
 import br.com.ilhasoft.push.services.PushRegistrationIntentService;
 

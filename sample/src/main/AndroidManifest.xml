@@ -2,12 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.ilhasoft.push_sample">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <permission android:name="br.com.ilhasoft.push_sample.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="br.com.ilhasoft.push_sample.permission.C2D_MESSAGE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,21 +18,10 @@
 
         <activity android:name="br.com.ilhasoft.push.chat.IlhaPushChatActivity" />
 
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <category android:name="br.com.ilhasoft.push_sample"/>
-            </intent-filter>
-        </receiver>
-
         <service
-            android:name=".services.ReceiverIntentService"
-            android:exported="false">
+            android:name=".services.ReceiverIntentService">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
@@ -49,7 +32,7 @@
         <service android:name="br.com.ilhasoft.push.services.PushInstanceIntentIdService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

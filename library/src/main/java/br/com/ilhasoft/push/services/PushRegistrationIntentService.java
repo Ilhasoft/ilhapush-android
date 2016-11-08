@@ -6,13 +6,12 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
+import com.google.firebase.iid.FirebaseInstanceId;
 
-import br.com.ilhasoft.flowrunner.flow.ContactBuilder;
-import br.com.ilhasoft.flowrunner.models.Contact;
 import br.com.ilhasoft.push.IlhaPush;
+import br.com.ilhasoft.push.java_wrapper.models.Contact;
 import br.com.ilhasoft.push.persistence.Preferences;
+import br.com.ilhasoft.push.java_wrapper.adapters.ContactBuilder;
 import retrofit2.Response;
 
 /**
@@ -29,23 +28,21 @@ public class PushRegistrationIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
-            InstanceID instanceID = InstanceID.getInstance(this);
-            String gcmId = instanceID.getToken(IlhaPush.getGcmSenderId(), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+            String pushToken = FirebaseInstanceId.getInstance().getToken();
 
             Preferences preferences = IlhaPush.getPreferences();
-            preferences.setGcmSenderId(IlhaPush.getGcmSenderId());
-            preferences.setIdentity(gcmId);
+            preferences.setIdentity(pushToken);
 
             Contact contact = null;
             if (!TextUtils.isEmpty(IlhaPush.getToken())) {
-                Response<Contact> response = saveContactWithToken(gcmId, IlhaPush.getToken());
+                Response<Contact> response = saveContactWithToken(pushToken, IlhaPush.getToken());
                 contact = response.body();
                 contact.setPhone(null);
                 preferences.setContactUuid(contact.getUuid());
             }
 
             preferences.apply();
-            onGcmRegistered(gcmId, contact);
+            onGcmRegistered(pushToken, contact);
         } catch (Exception exception) {
             Log.e(TAG, "onHandleIntent: ", exception);
         }
@@ -56,7 +53,7 @@ public class PushRegistrationIntentService extends IntentService {
 
     private Response<Contact> saveContactWithToken(String gcmId, String token) throws java.io.IOException {
         ContactBuilder contactBuilder = new ContactBuilder();
-        contactBuilder.setGcmId(gcmId);
+        contactBuilder.setFcmId(gcmId);
 
         return contactBuilder.saveContact(token).execute();
     }
