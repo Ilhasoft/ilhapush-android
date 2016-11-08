@@ -25,17 +25,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RapidProServices {
 
-//    private static final String BASE = "https://push.ilhasoft.mobi/";
-    private static final String BASE = "http://192.168.2.33:8000/";
+    private static final String TOKEN_FORMAT = "Token %s";
 
-    private final String token;
+    private String token;
+    private String host;
 
     private RapidProApi rapidProApi;
     private GsonDateTypeAdapter gsonDateTypeAdapter;
 
-    public RapidProServices(String token) {
+    public RapidProServices(String host, String token) {
         this.token = token;
+        this.host = host;
+
+        checkFields(token);
         buildApi();
+    }
+
+    private void checkFields(String token) {
+        if (this.token != null && !token.startsWith("Token")) {
+            this.token = String.format(TOKEN_FORMAT, token);
+        }
     }
 
     private void buildApi() {
@@ -47,7 +56,7 @@ public class RapidProServices {
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE)
+                .baseUrl(host)
                 .client(new OkHttpClient.Builder().build())
                 .addConverterFactory (GsonConverterFactory.create(gson))
                 .build();

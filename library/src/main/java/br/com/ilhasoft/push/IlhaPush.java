@@ -30,8 +30,11 @@ import retrofit2.Response;
  */
 public class IlhaPush {
 
+    private static final String HOST = "https://push.ilhasoft.mobi/";
+
     private static Context context;
     private static String token;
+    private static String host;
     private static String channel;
     private static Boolean forceRegistration = false;
     private static Class<? extends PushRegistrationIntentService> registrationServiceClass;
@@ -42,31 +45,23 @@ public class IlhaPush {
 
     IlhaPush() {}
 
-    public static void initialize(Context context, String token, String channel
-        , Class<? extends PushRegistrationIntentService> registrationServiceClass) {
+    public static void initialize(Builder builder) {
+        initialize(builder.context, builder.host, builder.token,
+                builder.channel, builder.registrationServiceClass, builder.uiConfiguration);
+    }
+
+    public static void initialize(Context context, String host, String token, String channel
+        , Class<? extends PushRegistrationIntentService> registrationServiceClass, UiConfiguration uiConfiguration) {
         IlhaPush.context = context;
+        IlhaPush.host = host;
         IlhaPush.token = token;
         IlhaPush.channel = channel;
         IlhaPush.registrationServiceClass = registrationServiceClass;
         IlhaPush.preferences = new Preferences(context);
-        IlhaPush.services = new RapidProServices(getToken());
-        IlhaPush.uiConfiguration = new UiConfiguration();
+        IlhaPush.services = new RapidProServices(host, getToken());
+        IlhaPush.uiConfiguration = uiConfiguration;
 
         registerGcmIfNeeded();
-    }
-
-    public static void initialize(Context context, String token, String channel) {
-        initialize(context, token, channel, PushRegistrationIntentService.class);
-    }
-
-    public static void initialize(Context context, Class<? extends PushRegistrationIntentService> registrationServiceClass) {
-        initialize(context, null, null, registrationServiceClass);
-    }
-
-    public static void initialize(Context context) {
-        IlhaPush.context = context;
-        IlhaPush.preferences = new Preferences(context);
-        IlhaPush.uiConfiguration = new UiConfiguration();
     }
 
     public static UiConfiguration getUiConfiguration() {
@@ -80,14 +75,14 @@ public class IlhaPush {
     public static IlhaPushChatFragment getIlhaPushChatFragment(String token, String channel) {
         IlhaPush.token = token;
         IlhaPush.channel = channel;
-        IlhaPush.services = new RapidProServices(token);
+        IlhaPush.services = new RapidProServices(host, token);
         return new IlhaPushChatFragment();
     }
 
     public static void startIlhaPushChatActivity(Context context, String token, String channel) {
         IlhaPush.token = token;
         IlhaPush.channel = channel;
-        IlhaPush.services = new RapidProServices(token);
+        IlhaPush.services = new RapidProServices(host, token);
         context.startActivity(new Intent(context, IlhaPushChatActivity.class));
     }
 
@@ -123,7 +118,7 @@ public class IlhaPush {
     }
 
     public static void loadMessage(Integer messageId, final LoadMessageListener listener) {
-        RapidProServices services = new RapidProServices(getToken());
+        RapidProServices services = new RapidProServices(host, getToken());
         services.loadMessageById(messageId).enqueue(new Callback<ApiResponse<Message>>() {
             @Override
             public void onResponse(Call<ApiResponse<Message>> call, Response<ApiResponse<Message>> response) {
@@ -143,7 +138,7 @@ public class IlhaPush {
     }
 
     public static void loadMessages(final MessagesLoadingListener listener) {
-        final RapidProServices services = new RapidProServices(getToken());
+        final RapidProServices services = new RapidProServices(host, getToken());
         String contactUuid = getPreferences().getContactUuid();
         if (!TextUtils.isEmpty(contactUuid)) {
             loadMessagesWithContact(services, contactUuid, listener);
@@ -200,7 +195,7 @@ public class IlhaPush {
     public static void updateContact(final Contact contact, final ContactListener listener) {
         contact.setUuid(preferences.getContactUuid());
 
-        RapidProServices services = new RapidProServices(token);
+        RapidProServices services = new RapidProServices(host, token);
         services.saveContact(contact).enqueue(new Callback<Contact>() {
             @Override
             public void onResponse(Call<Contact> call, Response<Contact> response) {
@@ -222,7 +217,7 @@ public class IlhaPush {
     public static void updateContact(final Contact contact) throws IOException {
         contact.setUuid(preferences.getContactUuid());
 
-        RapidProServices services = new RapidProServices(token);
+        RapidProServices services = new RapidProServices(host, token);
         services.saveContact(contact).execute();
     }
 
@@ -266,5 +261,51 @@ public class IlhaPush {
 
     public static String getChannel() {
         return channel;
+    }
+
+    public static class Builder {
+
+        private Context context;
+        private String token;
+        private String host = HOST;
+        private String channel;
+        private Class<? extends PushRegistrationIntentService>
+                registrationServiceClass = PushRegistrationIntentService.class;
+        private UiConfiguration uiConfiguration;
+
+        public Builder() {
+            this.uiConfiguration = new UiConfiguration();
+        }
+
+        public Builder setContext(Context context) {
+            this.context = context;
+            return this;
+        }
+
+        public Builder setToken(String token) {
+            this.token = token;
+            return this;
+        }
+
+        public Builder setHost(String host) {
+            this.host = host;
+            return this;
+        }
+
+        public Builder setChannel(String channel) {
+            this.channel = channel;
+            return this;
+        }
+
+        public Builder setRegistrationServiceClass(Class<? extends PushRegistrationIntentService>
+                                                                 registrationServiceClass) {
+            this.registrationServiceClass = registrationServiceClass;
+            return this;
+        }
+
+        public Builder setUiConfiguration(UiConfiguration uiConfiguration) {
+            this.uiConfiguration = uiConfiguration;
+            return this;
+        }
     }
 }
