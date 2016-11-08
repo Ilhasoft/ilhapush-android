@@ -61,7 +61,7 @@ public class IlhaPush {
         IlhaPush.services = new RapidProServices(host, getToken());
         IlhaPush.uiConfiguration = uiConfiguration;
 
-        registerGcmIfNeeded();
+        registerFcmIfNeeded();
     }
 
     public static UiConfiguration getUiConfiguration() {
@@ -225,7 +225,7 @@ public class IlhaPush {
         ContactBuilder contactBuilder = new ContactBuilder();
         contactBuilder.setFcmId(pushToken);
 
-        return contactBuilder.saveContact(token).execute();
+        return contactBuilder.saveContact(host, token).execute();
     }
 
     public static void forceRegistration() {
@@ -237,7 +237,7 @@ public class IlhaPush {
         return new IllegalStateException("Response not successful. HTTP Code: " + response.code() + " Response: " + response.raw());
     }
 
-    private static void registerGcmIfNeeded() {
+    private static void registerFcmIfNeeded() {
         if (forceRegistration || TextUtils.isEmpty(preferences.getIdentity())) {
             forceRegistration();
         }
@@ -263,6 +263,10 @@ public class IlhaPush {
         return channel;
     }
 
+    public static String getHost() {
+        return host;
+    }
+
     public static class Builder {
 
         private Context context;
@@ -273,7 +277,8 @@ public class IlhaPush {
                 registrationServiceClass = PushRegistrationIntentService.class;
         private UiConfiguration uiConfiguration;
 
-        public Builder() {
+        public Builder(Context context) {
+            this.context = context;
             this.uiConfiguration = new UiConfiguration();
         }
 
