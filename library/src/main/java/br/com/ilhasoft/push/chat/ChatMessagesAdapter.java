@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.ilhasoft.flowrunner.models.Message;
 import br.com.ilhasoft.push.IlhaPush;
+import io.rapidpro.models.Message;
 
 /**
  * Created by johncordeiro on 7/21/15.

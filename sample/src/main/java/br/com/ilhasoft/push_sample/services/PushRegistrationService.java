@@ -4,9 +4,9 @@ import android.util.Log;
 
 import java.io.IOException;
 
-import br.com.ilhasoft.flowrunner.models.Contact;
 import br.com.ilhasoft.push.IlhaPush;
 import br.com.ilhasoft.push.services.PushRegistrationIntentService;
+import io.rapidpro.models.Contact;
 
 /**
  * Created by john-mac on 7/2/16.

@@ -6,13 +6,13 @@ import android.text.TextUtils;
 import java.util.Date;
 import java.util.List;
 
-import br.com.ilhasoft.flowrunner.models.Message;
-import br.com.ilhasoft.flowrunner.models.Type;
-import br.com.ilhasoft.flowrunner.models.TypeValidation;
 import br.com.ilhasoft.push.IlhaPush;
 import br.com.ilhasoft.push.listeners.LoadMessageListener;
 import br.com.ilhasoft.push.listeners.MessagesLoadingListener;
 import br.com.ilhasoft.push.util.BundleHelper;
+import io.rapidpro.models.Message;
+import io.rapidpro.models.Type;
+import io.rapidpro.models.TypeValidation;
 
 /**
  * Created by john-mac on 6/30/16.

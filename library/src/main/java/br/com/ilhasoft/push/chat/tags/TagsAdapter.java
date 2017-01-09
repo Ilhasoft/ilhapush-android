@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import br.com.ilhasoft.flowrunner.models.FlowRule;
-import br.com.ilhasoft.flowrunner.models.TypeValidation;
 import br.com.ilhasoft.push.R;
+import io.rapidpro.models.FlowRule;
+import io.rapidpro.models.TypeValidation;
 
 /**
  * Created by john-mac on 6/30/16.

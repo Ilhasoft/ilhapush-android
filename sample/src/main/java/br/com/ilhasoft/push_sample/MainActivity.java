@@ -1,13 +1,13 @@
 package br.com.ilhasoft.push_sample;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import br.com.ilhasoft.flowrunner.models.Contact;
-import br.com.ilhasoft.push.listeners.ContactListener;
 import br.com.ilhasoft.push.IlhaPush;
+import br.com.ilhasoft.push.listeners.ContactListener;
+import io.rapidpro.models.Contact;
 
 public class MainActivity extends AppCompatActivity {
 

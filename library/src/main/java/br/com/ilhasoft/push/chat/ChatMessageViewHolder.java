@@ -17,9 +17,9 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 
-import br.com.ilhasoft.flowrunner.models.Message;
 import br.com.ilhasoft.push.R;
 import br.com.ilhasoft.push.util.PicassoImageGetter;
+import io.rapidpro.models.Message;
 
 /**
  * Created by john-mac on 4/11/16.
@@ -129,4 +129,5 @@ public class ChatMessageViewHolder extends RecyclerView.ViewHolder {
     public interface OnChatMessageSelectedListener {
         void onChatMessageSelected(Message chatMessage);
     }
+
 }

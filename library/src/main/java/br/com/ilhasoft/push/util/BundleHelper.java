@@ -2,7 +2,7 @@ package br.com.ilhasoft.push.util;
 
 import android.os.Bundle;
 
-import br.com.ilhasoft.flowrunner.models.Message;
+import io.rapidpro.models.Message;
 
 /**
  * Created by john-mac on 6/29/16.
