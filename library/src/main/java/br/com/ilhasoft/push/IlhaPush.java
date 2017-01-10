@@ -7,11 +7,6 @@ import android.text.TextUtils;
 
 import java.io.IOException;
 
-import br.com.ilhasoft.flowrunner.flow.ContactBuilder;
-import br.com.ilhasoft.flowrunner.models.ApiResponse;
-import br.com.ilhasoft.flowrunner.models.Contact;
-import br.com.ilhasoft.flowrunner.models.Message;
-import br.com.ilhasoft.flowrunner.service.services.RapidProServices;
 import br.com.ilhasoft.push.chat.IlhaPushChatActivity;
 import br.com.ilhasoft.push.chat.IlhaPushChatFragment;
 import br.com.ilhasoft.push.listeners.ContactListener;
@@ -20,6 +15,11 @@ import br.com.ilhasoft.push.listeners.MessagesLoadingListener;
 import br.com.ilhasoft.push.listeners.SendMessageListener;
 import br.com.ilhasoft.push.persistence.Preferences;
 import br.com.ilhasoft.push.services.PushRegistrationIntentService;
+import io.rapidpro.flow.ContactBuilder;
+import io.rapidpro.models.ApiResponse;
+import io.rapidpro.models.Contact;
+import io.rapidpro.models.Message;
+import io.rapidpro.service.services.RapidProServices;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -23,16 +23,16 @@ import android.widget.Toast;
 import java.util.Date;
 import java.util.List;
 
-import br.com.ilhasoft.flowrunner.managers.FlowRunnerManager;
-import br.com.ilhasoft.flowrunner.models.Message;
-import br.com.ilhasoft.flowrunner.models.Type;
-import br.com.ilhasoft.flowrunner.views.manager.SpaceItemDecoration;
 import br.com.ilhasoft.push.R;
 import br.com.ilhasoft.push.chat.tags.OnTagClickListener;
 import br.com.ilhasoft.push.chat.tags.TagsAdapter;
 import br.com.ilhasoft.push.persistence.Preferences;
 import br.com.ilhasoft.push.services.PushIntentService;
 import br.com.ilhasoft.push.util.BundleHelper;
+import br.com.ilhasoft.push.views.SpaceItemDecoration;
+import io.rapidpro.managers.FlowRunnerManager;
+import io.rapidpro.models.Message;
+import io.rapidpro.models.Type;
 
 /**
  * Created by john-mac on 8/30/16.

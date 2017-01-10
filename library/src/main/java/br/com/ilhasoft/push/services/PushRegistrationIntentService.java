@@ -9,10 +9,10 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 
-import br.com.ilhasoft.flowrunner.flow.ContactBuilder;
-import br.com.ilhasoft.flowrunner.models.Contact;
 import br.com.ilhasoft.push.IlhaPush;
 import br.com.ilhasoft.push.persistence.Preferences;
+import io.rapidpro.flow.ContactBuilder;
+import io.rapidpro.models.Contact;
 import retrofit2.Response;
 
 /**

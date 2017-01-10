@@ -14,4 +14,5 @@ public class PushInstanceIntentIdService extends InstanceIDListenerService {
         super.onTokenRefresh();
         IlhaPush.forceRegistration();
     }
+
 }
