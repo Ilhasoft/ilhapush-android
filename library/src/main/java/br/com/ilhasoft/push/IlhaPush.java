@@ -30,7 +30,10 @@ import retrofit2.Response;
  */
 public class IlhaPush {
 
+    public static final String BASE_URL = "https://push.ilhasoft.mobi/";
+
     private static Context context;
+    private static String host = BASE_URL;
     private static String token;
     private static String channel;
     private static String gcmSenderId;
@@ -43,26 +46,36 @@ public class IlhaPush {
 
     IlhaPush() {}
 
-    public static void initialize(Context context, String token, String channel, String gcmSenderId
-        , Class<? extends PushRegistrationIntentService> registrationServiceClass) {
+    public static void initialize(Context context, String host, String token, String channel,
+        String gcmSenderId, Class<? extends PushRegistrationIntentService> registrationServiceClass) {
         IlhaPush.context = context;
+        IlhaPush.host = host;
         IlhaPush.token = token;
         IlhaPush.channel = channel;
         IlhaPush.gcmSenderId = gcmSenderId;
         IlhaPush.registrationServiceClass = registrationServiceClass;
         IlhaPush.preferences = new Preferences(context);
-        IlhaPush.services = new RapidProServices(getToken());
+        IlhaPush.services = new RapidProServices(host, getToken());
         IlhaPush.uiConfiguration = new UiConfiguration();
 
         registerGcmIfNeeded();
     }
 
-    public static void initialize(Context context, String token, String channel, String gcmSenderId) {
-        initialize(context, token, channel, gcmSenderId, PushRegistrationIntentService.class);
+    public static void initialize(Context context, String token, String channel,
+                                  String gcmSenderId, Class<? extends PushRegistrationIntentService> registrationServiceClass) {
+        initialize(context, host, token, channel, gcmSenderId, registrationServiceClass);
     }
 
-    public static void initialize(Context context, String gcmSenderId, Class<? extends PushRegistrationIntentService> registrationServiceClass) {
-        initialize(context, null, null, gcmSenderId, registrationServiceClass);
+    public static void initialize(Context context, String host, String token, String channel, String gcmSenderId) {
+        initialize(context, host, token, channel, gcmSenderId, PushRegistrationIntentService.class);
+    }
+
+    public static void initialize(Context context, String token, String channel, String gcmSenderId) {
+        initialize(context, host, token, channel, gcmSenderId, PushRegistrationIntentService.class);
+    }
+
+    public static void initialize(Context context, String host, String gcmSenderId, Class<? extends PushRegistrationIntentService> registrationServiceClass) {
+        initialize(context, host, null, null, gcmSenderId, registrationServiceClass);
     }
 
     public static void initialize(Context context) {
@@ -82,14 +95,14 @@ public class IlhaPush {
     public static IlhaPushChatFragment getIlhaPushChatFragment(String token, String channel) {
         IlhaPush.token = token;
         IlhaPush.channel = channel;
-        IlhaPush.services = new RapidProServices(token);
+        IlhaPush.services = new RapidProServices(host, token);
         return new IlhaPushChatFragment();
     }
 
     public static void startIlhaPushChatActivity(Context context, String token, String channel) {
         IlhaPush.token = token;
         IlhaPush.channel = channel;
-        IlhaPush.services = new RapidProServices(token);
+        IlhaPush.services = new RapidProServices(host, token);
         context.startActivity(new Intent(context, IlhaPushChatActivity.class));
     }
 
@@ -125,7 +138,7 @@ public class IlhaPush {
     }
 
     public static void loadMessage(Integer messageId, final LoadMessageListener listener) {
-        RapidProServices services = new RapidProServices(getToken());
+        RapidProServices services = new RapidProServices(host, getToken());
         services.loadMessageById(messageId).enqueue(new Callback<ApiResponse<Message>>() {
             @Override
             public void onResponse(Call<ApiResponse<Message>> call, Response<ApiResponse<Message>> response) {
@@ -145,7 +158,7 @@ public class IlhaPush {
     }
 
     public static void loadMessages(final MessagesLoadingListener listener) {
-        final RapidProServices services = new RapidProServices(getToken());
+        final RapidProServices services = new RapidProServices(host, getToken());
         String contactUuid = getPreferences().getContactUuid();
         if (!TextUtils.isEmpty(contactUuid)) {
             loadMessagesWithContact(services, contactUuid, listener);
@@ -202,7 +215,7 @@ public class IlhaPush {
     public static void updateContact(final Contact contact, final ContactListener listener) {
         contact.setUuid(preferences.getContactUuid());
 
-        RapidProServices services = new RapidProServices(token);
+        RapidProServices services = new RapidProServices(host, token);
         services.saveContact(contact).enqueue(new Callback<Contact>() {
             @Override
             public void onResponse(Call<Contact> call, Response<Contact> response) {
@@ -224,7 +237,7 @@ public class IlhaPush {
     public static void updateContact(final Contact contact) throws IOException {
         contact.setUuid(preferences.getContactUuid());
 
-        RapidProServices services = new RapidProServices(token);
+        RapidProServices services = new RapidProServices(host, token);
         services.saveContact(contact).execute();
     }
 
@@ -232,7 +245,7 @@ public class IlhaPush {
         ContactBuilder contactBuilder = new ContactBuilder();
         contactBuilder.setGcmId(gcmId);
 
-        return contactBuilder.saveContact(token).execute();
+        return contactBuilder.saveContact(host, token).execute();
     }
 
     public static void forceRegistration() {

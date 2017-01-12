@@ -36,7 +36,7 @@ dependencies {
 
     compile 'com.squareup.picasso:picasso:2.5.2'
 
-    compile 'com.github.Ilhasoft:rapidpro-api-android:0.1.0'
+    compile 'com.github.Ilhasoft:rapidpro-api-android:0.2.0'
 
     testCompile 'junit:junit:4.12'
 }
