@@ -33,7 +33,7 @@ public class IlhaPush {
     public static final String BASE_URL = "https://push.ilhasoft.mobi/";
 
     private static Context context;
-    private static String host = BASE_URL;
+    public static String host = BASE_URL;
     private static String token;
     private static String channel;
     private static String gcmSenderId;

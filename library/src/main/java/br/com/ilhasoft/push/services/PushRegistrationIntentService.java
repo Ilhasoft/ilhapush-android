@@ -58,7 +58,7 @@ public class PushRegistrationIntentService extends IntentService {
         ContactBuilder contactBuilder = new ContactBuilder();
         contactBuilder.setGcmId(gcmId);
 
-        return contactBuilder.saveContact(token).execute();
+        return contactBuilder.saveContact(IlhaPush.host, token).execute();
     }
 
     public void onGcmRegistered(String pushIdentity, Contact contact){}
